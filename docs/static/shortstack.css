@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Baloo";
+  src: url("BalooTammudu2-Regular.ttf") format("truetype");
+}
+
+html,
+body,
+button,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Baloo", sans-serif;
+  /* color: #ffffff; */
+}
+
+.cover .anchor span,
+body .cover {
+  color: #ffffff;
+}
+
+section.cover a,
+section.cover a:hover {
+  text-decoration: underline;
+}
+section.cover h1 a {
+  text-decoration: none;
+}
