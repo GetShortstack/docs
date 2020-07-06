@@ -1,4 +1,5 @@
 <!-- ![logo](_media/icon.svg) -->
+<!-- background color -->
 
 # 🥞Shortstack <small>1.0</small>
 
@@ -19,4 +20,4 @@
 
 <!-- background color -->
 
-![color](#ee87a9)
+![color](#ff5c6c)

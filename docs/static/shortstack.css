@@ -27,3 +27,7 @@ section.cover a:hover {
 section.cover h1 a {
   text-decoration: none;
 }
+
+.cover.show {
+  background: #ff5c6c !important;
+}
