@@ -36,3 +36,20 @@ section.cover h1 a {
 .app-nav {
   color: #ff5c6c;
 }
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar .app-name {
+  -webkit-order: 0;
+  order: 0;
+}
+.sidebar .search {
+  -webkit-order: 1;
+  order: 1;
+}
+.sidebar .sidebar-nav {
+  -webkit-order: 2;
+  order: 2;
+}
