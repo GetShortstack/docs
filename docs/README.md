@@ -137,3 +137,5 @@ def main(params, state, request):
     status_code = 200
     return response_body, status_code
 ```
+
+# [Release Notes](/release.md)
