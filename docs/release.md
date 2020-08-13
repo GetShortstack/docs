@@ -1,3 +1,17 @@
+# v0.4
+
+_released aug 13 2020_
+
+## Logs
+
+<iframe width="560" height="415" src="https://www.youtube.com/embed/UXy_Y6BXo6U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+You can view your endpoint logs by project using the Logs view from the navbar.
+
+## Endpoint Runner Enhancements
+
+<iframe width="560" height="415" src="https://www.youtube.com/embed/CkcY-a5lGYw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+The Endpoint Runner can be used for other HTTP calls and can include a JSON body.
+
 # v0.3
 
 _released july 30 2020_
