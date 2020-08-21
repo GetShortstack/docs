@@ -138,4 +138,210 @@ def main(params, state, request):
     return response_body, status_code
 ```
 
+# Shortstack CLI
+
+If you have a development environment you like, you might prefer to
+develop there rather than go configure a new one in the browser. We get that! The Shortstack CLI will allow you to do everything the web app lets you do
+
+- create/delete endpoints
+- run them in the remote environment
+- view logs
+- add packages
+- anything\* else you can do in the web app :)
+
+\* almost anything
+
+## Installation
+
+Probably something like
+
+Mac OS:
+
+```zsh
+$ brew install stack-cli
+```
+
+Windows:
+
+```zsh
+$ npm install stack-cli
+```
+
+## Getting Started
+
+Now that you have the CLI installed, you'll need to initialize to your stack account.
+
+### Authenticate:
+
+First authenticate yourself
+
+```zsh
+stack init
+```
+
+### Initialize
+
+Once authenticated, you'll need to initialize
+
+```zsh
+stack initialize
+```
+
+This will create a local directory at ~/GetShortstack with a folder per projecct. In each project folder, you'll find the endpoints, your shared code, and variables as individual .py files.
+
+### Set Environment
+
+Similar to the project dropdown from the web app, you'll need to specify which project you're working with. This allows you to add packages, variables/secrets, and endpoints; respecting each project's isolated runtime.
+
+```zsh
+stack set ProjectName
+```
+
+You can view active environment settings with the `status` command:
+
+```zsh
+stack status
+```
+
+NOTE: We highly recommend setting up Zsh & autocomplete. It'll let you tab through commands like butter
+
+## Creating
+
+### Add or Remove
+
+- `Packages`: You can add any package installable by Pip
+  ex: to install numpy
+
+```zsh
+stack add package numpy
+stack remove package numpy
+```
+
+- `Endpoints`: You can create new endpoints in the active project
+
+```zsh
+stack add endpoint MyEndpointName
+stack remove endpoint MyEndpointName
+```
+
+- `Variables`: You can add variables/secrets from [the app](https://app.getshortstack.com/variables) or right from the command line
+
+```zsh
+stack add variable NewVar
+stack remove variable NewVar
+```
+
+Then follow the prompt for the variable value. Note: while you can update the value at any time, we never reveal the value for your security.
+
+### Create New Project
+
+You can create a new project with
+
+```zsh
+stack new project MyNewProject
+```
+
+Note: this does not set it as the active project. You'll need to use `stack set` for that:
+
+```zsh
+stack set project MyNewProject
+```
+
+## Running
+
+### List
+
+You can use the `list` command to list available projects, packages, and endpoints. See below
+
+View available projects:
+
+```zsh
+stack list project
+```
+
+View packages added to the environment. You can `remove` them or `add` new ones.
+
+```zsh
+stack list package
+```
+
+View endpoints and their associated URLs. You can execute them with `run`.
+
+```zsh
+stack list endpoint
+```
+
+### Run
+
+You can execute any endpoint right from the terminal.
+
+```zsh
+stack run MyEndpoint [GET, POST, PUT, DELETE] --args --body *.json
+```
+
+The third argument is the HTTP request type.
+Add query args with --args, or -a
+Add any json file in the request body with --body or -b
+
+To make a GET request:
+
+```zsh
+stack run MyEndpoint GET --a  message=Hello
+```
+
+Makes a GET call to `/MyEndpoint?message=Hello`
+
+To make a POST request:
+
+```zsh
+stack run MyEndpoint POST --b  body.json
+```
+
+Makes a POST call to `/MyEndpoint` with the body.json
+
+### Logs
+
+After running an endpoint, Shortstack automatically collects logs and standard out! View them by running the `logs` command:
+To view all the logs of a project, run:
+
+```zsh
+stack logs
+```
+
+You can also view the logs of an individual endpoint
+
+```zsh
+stack logs endpoint MyEndpoint
+```
+
+## Syncronizing
+
+Now that you've made changes locally, it's time to save them so they're syncronized with Shortstack & the web app.
+
+### Diff
+
+To view a difference of what's syncronized with remote, run `diff`:
+
+```zsh
+stack diff
+```
+
+### Override
+
+Use `override` to sync the changes.
+
+To override your local changes with those saved to your Shortstack account, override your local:
+
+```zsh
+stack override local
+```
+
+To override your remote changes with those saved to your local environment, override your remote:
+
+```zsh
+stack override remote
+```
+
+Note: override only syncronizes your active project. You can set the active project with `set`
+
 # [Release Notes](/release.md)
