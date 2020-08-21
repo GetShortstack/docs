@@ -4,14 +4,203 @@ Use this quickstart guide to jump into Shortstack. If you have any lingering que
 
 # Shortstack Endpoints
 
-Every endpoint you write is a function called `main` that gets run when the endpoint is hit:
+From a high level, Shortstack lets you create projects. In each project, you'll find:
 
-`def main(params, state, request):`
+- Endpoints: code executable by hitting a URL
+- Shared Code: project level code that can be accessed by any endpoint in a project
+- Variables: a secure way to use secrets and environment variables in your code.
+- Storage: a simple dictionary that persists across your endpoints. It's a great way to build a proof of concept without needing to hook up a database.
 
-## main
+## The Endpoints
 
-- `main` is the function that the endpoint executes. Don't
-  rename it :) You can add as many helper functions as you want, but `main` is the entry point.
+- Endpoints are immediately accessible by a URL, which gets assigned once the endpoint is initially saved.
+- When the URL is hit, the endpoint will pattern match the function name to the HTTP request type. For example, if we have an endpoint with the following code:
+
+```python
+
+# /myEndpoint
+
+def GET():
+  return {"hello":"GET"}
+
+def POST():
+  return {"hello": "POST"}
+```
+
+Calling GET /myEndpoint will return `{"hello": "GET"}`
+
+And calling POST /myEndpoint will return `{"hello": "POST"}`
+
+We currently support any of the following HTTP request types:
+
+- GET
+- PUT
+- POST
+- DELETE
+- OPTIONS
+- HEADs
+- PATCH
+- TRACE
+
+## params
+
+Now that you can create an endpoint on Shortstack, let's add parameters!
+
+### Query Params
+
+Simply add the parameter to the function and use it like a variable!
+
+```python
+def GET(name):
+  return {"hello":name}
+```
+
+Now let's call endpoint `/myEndpoint?name=Shortstack`, and we'll get the following response:
+
+```json
+{
+  "hello": "Shortstack"
+}
+```
+
+### Path params
+
+Just like the query params, just add the path parameter to the function
+
+```python
+def get(name):
+  return {"hello":name}
+```
+
+Now let's call endpoint `/myEndpoint/Shortstack`, and we'll get the following response:
+
+```json
+{
+  "hello": "Shortstack"
+}
+```
+
+### JSON params
+
+For a JSON body, you can create a Class and pass in an instance. The instance will be created with the contents of your JSON body!
+
+```python
+from pydantic import BaseModel # don't forget the import
+
+# The class for the json body to be matched
+class NewUser(BaseModel):
+  name: str
+  email: str
+  phone: Optional[str] = None
+
+# add the class as a parameter. Yay types! (it let's us know how to match the JSON) :)
+def post(newUser: NewUser):
+  return {
+    "created": True,
+    "newUser": newUser.name,
+  }
+```
+
+So now if we call this endpoint with the following JSON body:
+
+```json
+POST /myEndpoint
+{
+  "name": "Shortstack",
+  "email": "nader+hello@getshortstack.com",
+  "phone": "123-456-7890"
+}
+```
+
+We'll get the following response:
+
+```json
+{
+  "created": True,
+  "newUser": Shortstack
+}
+```
+
+### File params
+
+If you want to upload a file such as an image or document
+
+```python
+def post(file = File(...))
+
+  # We're using our built in file uploader
+  # see below for documentation on it
+  link = upload_blob(file)
+
+  return {"uploaded": True, "fileName": file.filename, "fileURL": link}
+```
+
+So let's upload this picture of our puppy ![Toulouse](static/docsMedia/Toulouse.JPG ":size=150")
+
+POST /myEndpoint
+
+```json
+{
+file: (the file)
+}
+```
+
+The endpoint will respond with
+
+```json
+{
+  "uploaded": True,
+  "fileName": Toulouse.JPG,
+  "fileURL": LINK_TO_TOULOUSE
+}
+```
+
+Since this was a file upload, we could just add the file directly
+as a function paremter `def post(file = File(...))`
+
+### Another Example: File upload + json body
+
+However, if we want to send more data in a json body, we can include the
+File as an attribute of the JSON body class, as we saw with the json body example above. So let's do that!
+
+```python
+from pydantic import BaseModel # don't forget the import
+
+# The class for the json body to be matched
+class AwesomePhoto (BaseModel):
+  createDate: str
+  photo: File
+
+# Your Endpoint function with the class as a parameter
+def post(newPhoto: AwesomePhoto):
+  link = upload_blob(newPhoto.photo)
+
+  return {
+  "uploaded": True,
+  "fileName": newPhoto.photo,
+  "fileURL": link
+  }
+```
+
+So now if we call this endpoint with the following JSON body:
+
+```json
+POST /myEndpoint
+{
+  "createDate": "1970-01-01",
+  "photo": (the file),
+}
+```
+
+We'll get the following response:
+
+```json
+{
+  "uploaded": True,
+  "fileName": Toulouse.JPG,
+  "fileURL": LINK_TO_TOULOUSE
+}
+```
 
 ## Shared Code
 
@@ -24,24 +213,6 @@ You can access the shared code via the `shared` object in any endpoint. So the f
 ```python
 shared.breakfast # will return "pancakes"
 ```
-
-## params
-
-- `params` is a [python dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) containing your incoming query or body arguments. `params.get("incoming")` gets your argument named
-  incoming, or `None` if it doesn't exist.
-
-  ```python
-  # Example:
-  # /your_endpoint?incoming=shortstack
-  params.get("incoming") # returns "shortstack"
-
-  # /your_endpoint
-  params.get("incoming") # returns None
-
-  # /your_endpoint
-  params.get("incoming", "none provided") # returns "none provided" if incoming doesn't exist
-
-  ```
 
 ## variables
 
@@ -61,13 +232,13 @@ shared.breakfast # will return "pancakes"
 
 - `storage` is a dictionary for you to persist data. It's a bootstrapped database inspired by localStorage. It's available across all of your endpoints. Go to [Your Storage](https://app.getshortstack.com/storage) to initialize or edit objects. For example, let's create a new list to store phone numbers:
 
-  1. Hover your cursor over storage and click on the '+' icon that appears  
+  1. Hover your cursor over storage and click on the '+' icon that appears
      ![image](static/docsMedia/step1.png ":size=550")
-  2. Name this list. We'll call it numbers  
+  2. Name this list. We'll call it numbers
      ![image](static/docsMedia/step2.png ":size=550")
-  3. Note the data type defaults to NULL. Hover your cursor over NULL and click on the edit(pencil) that appears  
+  3. Note the data type defaults to NULL. Hover your cursor over NULL and click on the edit(pencil) that appears
      ![image](static/docsMedia/step3.png ":size=550")
-  4. Replace null with empty brackets for a list and click the purple check on the right. Make sure the click the check next to [ ... ] to save the data type as a list instead of string  
+  4. Replace null with empty brackets for a list and click the purple check on the right. Make sure the click the check next to [ ... ] to save the data type as a list instead of string
      ![image](static/docsMedia/step4.png ":size=550")
 
   Yay! Your storage now has a list called numbers ready to use :)
@@ -345,3 +516,7 @@ stack override remote
 Note: override only syncronizes your active project. You can set the active project with `set`
 
 # [Release Notes](/release.md)
+
+```
+
+```
