@@ -38,6 +38,20 @@
         // },
       };
     </script>
+    <script src="arrive.min.js"></script>
+    <script>
+      document.arrive(".app-name-link", function () {
+        console.log(this);
+        // let header = document.getElementsByClassName("app-name-link");
+        let version = document.createElement("sub");
+        version.append("beta");
+        version.style.fontSize = "0.675rem";
+        version.style.marginLeft = "8px";
+        setTimeout(() => {
+          this.append(version);
+        }, 300);
+      });
+    </script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-python.min.js"></script>
