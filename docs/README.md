@@ -2,6 +2,10 @@
 
 Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
 
+### Environment
+
+Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
+
 # Shortstack Endpoints
 
 From a high level, Shortstack lets you create projects. In each project, you'll find:
@@ -516,6 +520,8 @@ stack override remote
 Note: override only syncronizes your active project. You can set the active project with `set`
 
 # [Release Notes](/release.md)
+
+# [Python Types](/typehints.md)
 
 ```
 
