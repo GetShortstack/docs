@@ -6,7 +6,7 @@ Use this quickstart guide to jump into Shortstack. If you have any lingering que
 
 [✓] Alpha: we are testing Shortstack with a very small, closed set of users.
 
-[ ] Beta: you can sign up on the waitlist, and we're doing our best to get through it. Turnarounds can take a week or more. We hope you build something great, please let us know if you find something wrong.
+[✓] Beta: you can sign up on the waitlist, and we're doing our best to get through it. Turnarounds can take a week or more. We hope you build something great, please let us know if you find something wrong.
 
 [ ] Public Beta: anyone can crate an account.
 
