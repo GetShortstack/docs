@@ -2,6 +2,16 @@
 
 Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
 
+#### Where we're at
+
+[✓] Alpha: we are testing Shortstack with a very small, closed set of users.
+
+[ ] Beta: you can sign up on the waitlist, and we're doing our best to get through it. Turnarounds can take a week or more. We hope you build something great, please let us know if you find something wrong.
+
+[ ] Public Beta: anyone can crate an account.
+
+[ ] Public launch: Stable for enterprise use cases.
+
 ### Environment
 
 Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
