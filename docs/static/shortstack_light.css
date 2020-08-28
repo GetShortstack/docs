@@ -17,7 +17,7 @@ h5 {
 
 .cover .anchor span,
 body .cover {
-  color: #ffffff;
+  color: #eaeeef;
 }
 
 section.cover a,
@@ -29,12 +29,12 @@ section.cover h1 a {
 }
 
 .cover.show {
-  background: #ff5c6c !important;
+  background: #6ca7b2 !important;
 }
 
 .app-name,
 .app-nav {
-  color: #ff5c6c;
+  color: #6ca7b2;
 }
 
 .sidebar {

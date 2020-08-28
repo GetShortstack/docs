@@ -20,4 +20,4 @@
 
 <!-- background color -->
 
-![color](#ff5c6c)
+![color](#6ca7b2)

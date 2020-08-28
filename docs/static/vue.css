@@ -126,7 +126,7 @@ li input[type="checkbox"] {
   cursor: pointer;
 }
 .app-nav li ul {
-  background-color: #fff;
+  background-color: #f8fafa;
   border: 1px solid;
   border-color: #ddd #ddd #ccc;
   border-radius: 4px;
@@ -173,7 +173,7 @@ li input[type="checkbox"] {
   animation: octocat-wave 0.56s ease-in-out;
 }
 .github-corner svg {
-  color: #fff;
+  color: #f8fafa;
   fill: var(--theme-color, #ff5c6c);
   height: 80px;
   width: 80px;
@@ -346,7 +346,7 @@ body.sticky .sidebar-toggle {
 }
 .markdown-section p.tip,
 .markdown-section tr:nth-child(2n) {
-  background-color: #f8f8f8;
+  background-color: #eaeeef;
 }
 .markdown-section p.tip {
   border-bottom-right-radius: 2px;
@@ -359,7 +359,7 @@ body.sticky .sidebar-toggle {
 .markdown-section p.tip:before {
   background-color: #f66;
   border-radius: 100%;
-  color: #fff;
+  color: #f8fafa;
   content: "!";
   font-family: Dosis, Source Sans Pro, Helvetica Neue, Arial, sans-serif;
   font-size: 14px;
@@ -505,7 +505,7 @@ section.cover.show {
   display: flex;
 }
 section.cover.has-mask .mask {
-  background-color: #fff;
+  background-color: #f8fafa;
   opacity: 0.8;
   position: absolute;
   top: 0;
@@ -570,7 +570,7 @@ section.cover .cover-main > p:last-child a {
 }
 section.cover .cover-main > p:last-child a:last-child {
   background-color: var(--theme-color, #ff5c6c);
-  color: #fff;
+  color: #f8fafa;
 }
 section.cover .cover-main > p:last-child a:last-child:hover {
   color: inherit;
@@ -588,7 +588,7 @@ section.cover blockquote > p > a:hover {
 }
 .sidebar,
 body {
-  background-color: #fff;
+  background-color: #f8fafa;
 }
 .sidebar {
   color: #364149;
@@ -687,7 +687,7 @@ body {
 }
 .markdown-section code {
   border-radius: 2px;
-  color: #e85462;
+  color: #6ca7b2;
   font-size: 0.8rem;
   margin: 0 2px;
   padding: 3px 5px;
@@ -695,8 +695,11 @@ body {
 }
 .markdown-section code,
 .markdown-section pre {
-  background-color: #f8f8f8;
+  background-color: #eaeeef;
   font-family: Roboto Mono, Monaco, courier, monospace;
+}
+.markdown-section pre {
+  border-radius: 8px;
 }
 .markdown-section pre {
   -moz-osx-font-smoothing: initial;
@@ -753,7 +756,7 @@ body {
 }
 .token.function,
 .token.keyword {
-  color: #e85462;
+  color: #6ca7b2;
 }
 .token.atrule,
 .token.regex,
@@ -787,7 +790,7 @@ body {
 .markdown-section pre > code {
   -moz-osx-font-smoothing: initial;
   -webkit-font-smoothing: initial;
-  background-color: #f8f8f8;
+  background-color: #eaeeef;
   border-radius: 2px;
   color: #525252;
   display: block;
