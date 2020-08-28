@@ -1,5 +1,7 @@
 # Getting Started Guide
 
+[alt guide](/taketwo.md)
+
 Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
 
 #### Where we're at
