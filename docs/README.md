@@ -65,11 +65,7 @@ def get():
 
 5. Press the save endpoint button to deploy your code.
 6. Run the endpoint by copying the url at the top of the page and entering it in a new tab or by pressing the play button at the bottom of the page.
-   <<<<<<< HEAD
    Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6`
-   =======
-   Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6` at the top of the page.
-   > > > > > > > e0896a858962ca875543cba18158cc1c8c1d9471
 7. You should see `{"message": "hello world"}` as the response :)
 
 ## Defining Endpoints
@@ -78,11 +74,8 @@ Hint: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Sta
 
 ### Handling http methods
 
-<<<<<<< HEAD
-
 - # To handle different http methods for a given url, create new functions named with the http request type you would like to handle. The following methods are currently supported.
-- To handle different http methods for a given url, create new functions named with the http verb you would like to handle. The following methods are currently supported.
-  > > > > > > > e0896a858962ca875543cba18158cc1c8c1d9471
+
   - get
   - post
   - put
@@ -107,7 +100,6 @@ def post():
 To change an endpoint's url suffix to something more readable and useful, click on the `edit metadata` tab at the bottom of the editor and modify the url path. Once satisfied press save.
 
 Hint: Endpoints are immediately accessible by its url after it is saved.
-<<<<<<< HEAD
 
 ### Sending data to your endpoints
 
@@ -262,168 +254,6 @@ You can access the shared code via the `shared` object in any endpoint. So the f
 
 ```python
 shared.breakfast # will return "pancakes"
-```
-
-## Variables
-
-=======
-
-### Path params
-
-> > > > > > > e0896a858962ca875543cba18158cc1c8c1d9471
-
-Path params are parameters encoded as part of the url enclosed with `/`.
-
-Ex:
-
-- `/resource/1`
-- `/resource/2/do_something`
-
-To extract the resource id (ex. 1, 2) for our function to use, we need to modify the endpoint path. Click on the `edit metadata` tab at the bottom of the editor and modify the url path to `/resource/{resource_id}`.
-
-Next add `resource_id` as an argument to your function definition to use it.
-
-```python
-def get(resource_id: int):
-  return {"resource_id": resource_id}  # {"resource_id": 1}
-```
-
-Hint: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
-
-### Query Params
-
-Query params are parameters found at the end of url after `?` They are key value pairs joined with `=` character and separated by `&`.
-Ex:
-
-- `/resource?id=1`
-- `/resource?type=2&filter=brita`
-
-Simply add the query param names as arguments in the function to use in the endpoint.
-
-```python
-def get(type: int):
-  return {"type": type}  # {"type": 2}
-```
-
-To optionally accept a query parameter define the variable as a python keyword argument.
-
-```python
-def get(type: int, filter=None):
-  return {"type": type, "filter": filter}  # {"type": 2, "filter": "brita"}
-```
-
-### Request Body
-
-The request body is data sent from a client to your backend.
-
-Define your body with a pydantic model then use the class as a type hint for function argument to use the body in the endpoint.
-
-```python
-from typing import Optional
-from pydantic import BaseModel
-
-# The class for the  body to be matched
-class ItemInBody(BaseModel):
-  name: str
-  email: str
-  phone: Optional[str] = None
-
-# add the class as a parameter
-def post(item: ItemInBody):
-  return item  # {"name": "Alec", "email": "email@mail.com", "phone": "123-456-7890"}
-```
-
-To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
-
-To test this we can use a tool like [Postman](https://www.postman.com) or you can use Shorstack's `endpoint runner` which you will find at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
-
-```json
-{ "name": "Alec", "email": "email@mail.com", "phone": "123-456-7890" }
-```
-
-Press the play button and you should see the `ItemInBody` type sent back as a json response.
-
-Hint: You can nest pydantic models.
-
-Hint: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
-
-### Request Files
-
-To receive files sent as form data you can declare a keyword argument with default value of `File(...)`.
-
-```python
-from fastapi import File
-import file
-
-def post(file_contents: bytes = File(...))
-
-  # We're using our built in file uploader
-  # see below for documentation on it
-  # http://docs.getshortstack.com/#/?id=upload-files
-  link = file.upload(file_contents)
-
-  return {"file_url": link}
-```
-
-You can specify file type as `UploadFile` to acess file meta data and handle the file more efficiently. See all of `UploadFile`'s [attributes here](https://fastapi.tiangolo.com/tutorial/request-files/#uploadfile).
-
-```python
-from fastapi import File, UploadFile
-import file
-
-await def post(uploaded_file: UploadFile = File(...))
-
-  file_contents = await uploaded_file.read()
-
-  link = file.upload(file_contents)
-
-  return {"file_url": link, "file_name": uploaded_file.filename}
-```
-
-To handle multiple uploaded files, type hint the parameter as a `List`.
-
-```python
-from typing import List
-from fastapi import File, UploadFile
-import file
-
-await def post(uploaded_files: List[UploadFile] = File(...))
-
-  return {"file_names": [f.filename for f in uploaded_files]}
-```
-
-### Responses
-
-Http responses are used to send data back to the client. Responses include a body, headers, cookies, and a status code.
-
-You can create a response by returning from an endpoint handler. By default the response status code is `200`. The object returned will be used as the body.
-
-The default status code can be changed by annotating the endpoint handler using `@route.details` decorator. This has an added benefit of being documented in the OpenAPI specification.
-
-```python
-import route
-
-@route.details(status_code=201)
-def post():
-  return {"message": "created"}
-```
-
-To return a custom response you can return a Starlette response object. Read more about [Starlette response objects here](https://www.starlette.io/responses/).
-
-```python
-from fastapi.responses import JSONResponse
-
-def post():
-  return JSONResponse(status_code=201, content={"message": "created"})
-```
-
-You can return an error code using a Starlette response object or you can raise an HttpException.
-
-```python
-from fastapi import HTTPException
-
-def post():
-  raise HTTPException(status_code=404, detail="Item not found")
 ```
 
 ## Shared Code
@@ -780,8 +610,6 @@ stack override remote
 
 Note: override only syncronizes your active project. You can set the active project with `set`
 
-<<<<<<< HEAD
-
 ### Runtime and Environment
 
 Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
@@ -805,13 +633,3 @@ Older Versions:
 # [Release Notes](/release.md)
 
 # [Python Types](/typehints.md)
-
-```
-
-```
-
-### Runtime and Environment
-
-Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
-
-> > > > > > > e0896a858962ca875543cba18158cc1c8c1d9471
