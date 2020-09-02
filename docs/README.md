@@ -1,6 +1,15 @@
-# Shortstack
+## Getting Started Guide
 
-Shortstack is a development environment that allows you to rapidly build and scale APIs. Shortstack aims to optimize for developer time without the tradeoff of vendor lockin.
+### A quick summary from the founders
+
+Shortstack is a platform that let's you focus on the essence of your backend while we do all the heavy lifting. Ignore anyting about environments, infrastructure, etc, and just... code. We hope you build something great and make shortstack your best friend, it sure is ours :')
+
+To clarify: this is not just an abstraction, it's a powerful developer tool thats genuinely writing all of the backend/infrastructure code behind the scenes, allowing you to return your mindshare to your product and your customers!
+
+We totally get that sometimes, frameworks are just too limiting. We've been there, so we designed Shortstack from the start with ability to eject. At any time, you can go under the hood, or even eject your code, including all of the backend code we wrote for you, and go host it yourself. If you do this, we'd love to know where we fell... well.. short :)
+
+We hope you love it
+-Nader & Alec
 
 **Highlighted Features**:
 
@@ -35,585 +44,268 @@ Use this quickstart guide to jump into Shortstack. If you have any lingering que
 
 [ ] Public launch: Stable for enterprise use cases.
 
-# User Guide
+### This doc
 
-## Core Concepts
+will go over the core features of Shortstack by building a sign up form that texts you everytime someone signs up.
 
-Shortstack lets you create projects. In each project, you'll find:
+**7 steps, eta: 10 min**
 
-- Endpoints: Code that responds to http requests.
-- Shared Code: Code that can be shared by any endpoint in a project
-- Packages: Installable 3rd party packages from PyPi that can be used in endpoints or shared code
-- Variables: A secure way to use and manage secrets, keys, passwords and is also a good way to manage environment variables or global constants in your code.
-- Storage: A simple key value database. It can be thought of as a persistent dictionary accross requests as its api closely mirrors python's native dict type. It's a great way to build a proof of concept without needing to hook up a database.
+### Setup
 
-## Quickstart
+#### Webapp Setup
 
-This requires a shorstack account. [Create one here](https://app.getshortstack.com/signup)!
+You can get started right away by logging in to https://app.getshortstack.com, or set up the CLI.
 
-Lets create a hello world project.
+#### CLI Setup
 
-1. Navigate to the [endpoints page](https://app.getshortstack.com/endpoints).
-2. Create a new endpoint by pressing the plus (+) sign in the side bar.
-3. Enter a name for the endpoint we can call it `hello_world`.
-4. Write the following python code in the editor.
+on Mac:
+
+> brew install getshortstack
+
+on Windows:
+The CLI is supported on WSL. Please follow the instructions here to install.
+
+### Create a basic endpoint
+
+**Step 1 of 7**
+
+A huge benefit of Shortstack is that the concept of deploying has been abstracted. Simply create an endpoint, and by default, it's available.
+
+From the webapp: click "+" to create an endpoint. Give it a name, and click save!
+From the CLI: type `stack add endpoint <your EP name>`
+
+Boom, your endpoint is saved and hosted!
+
+> Webapp: At the top of the code editor, you'll see the hoted URL. It's ready to go and be used in any app you're building. Go to "home" and you'll see all your endpoints, including this one.
+
+> CLI: You should now have a shortstack directory at `~/GetShortstack`. Creating a new endpoint will add a python file for the endpoint in that directory. `stack list` will get you the URLs for every endpoint. If something didn't work, make sure to login and initialize! `stack login` followed by `stack init`.
+
+Now let's make the endpoint do something.
+
+### GET request with a query args
+
+To accept a query argument, simply add the argument to the function and use it like a variable!
 
 ```python
-def get():
-  return {"message": "hello world"}
+def get(greeting):
+  return {"response": f"{greeting} world!"}
 ```
 
-5. Press the save endpoint button to deploy your code.
-6. Run the endpoint by copying the url at the top of the page and entering it in a new tab or by pressing the play button at the bottom of the page.
-   Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6`
-7. You should see `{"message": "hello world"}` as the response :)
+Now let's hit the endpoint!
 
-## Defining Endpoints
+> In the webapp: below the code editor, you can use the endpoint runner. Select GET and query params. Type greeting into the table, and hola as the value. Shortstack might've predicted the query args and type it in for you.
 
-Hint: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Starlette](https://www.starlette.io) and supports much of its API. To dig deeper in request/response, validation and documenation it might be helpful to checkout their docs.
+> In the CLI: `stack run endpointName GET --args greeting=hola`. Note if you set up shell autocomplete, you can hit tab and the CLI will suggest the available endpoints and HTTP request types! Also, you can type -a instead of --args.
+> Note: you can also just open a new tab and manually type in the query argument.
 
-### Handling http methods
+The response should be as follows:
 
-To handle different http methods for a given url, create new functions named with the http request type you would like to handle. The following methods are currently supported.
+```json
+{"response": "hola world"} // GET /endpointurl?greeting=hola
 
-- get
-- post
-- put
-- delete
-- options
-- head
-- patch
-- trace
+{"response": "marhaba world"} // GET /endpointurl?greeting=marhaba
+```
 
-Example:
+Read more about how this works
+<a href="/#/full?id=query-arguments" target="_blank">here</a>
+
+Your endpoint can now accept data! Now let's do a POST.
+
+### POST call with JSON body
+
+The function name from the previous example was `get`. You can use any valid HTTP request type, and Shortstack will pattern match the appropriate function based on the incoming HTTP request. Read more
+<a href="/#/full?id=handling-http-methods" target="_blank">here</a>
+. So to handle a POST call, we just add a function called `post`.
 
 ```python
-def get():
-  return {"message":"GET"}
-
 def post():
-  return {"message": "POST"}
+    return {}
 ```
 
-### Custom endpoint paths
-
-To change an endpoint's url suffix to something more readable and useful, click on the `edit metadata` tab at the bottom of the editor and modify the url path. Once satisfied press save.
-
-Hint: Endpoints are immediately accessible by its url after it is saved.
-
-### Sending data to your endpoints
-
-There are currently 4 supported ways to send data to your endpoints.
-
-- Path Parameters
-- Query Arguments
-- Request Body
-- Request Files
-
-#### Path params
-
-Path params are parameters encoded as part of the url enclosed with `/`.
-
-Ex:
-
-- `/resource/1`
-- `/resource/2/do_something`
-
-To extract the value (ex. 1, 2) for our function to use, we need to modify the endpoint path. Click on the `edit metadata` tab at the bottom of the editor and modify the url path to `/resource/{resource_id}`.
-
-Next add `resource_id` as an argument to your function definition to use it.
-
-```python
-def get(resource_id: int):
-  return {"resource_id": resource_id}  # {"resource_id": 1}
-```
-
-Hint: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
-
-#### Query Arguments
-
-Query Arguments are parameters found at the end of url after `?` They are key value pairs joined with `=` character and separated by `&`.
-Ex:
-
-- `/resource?id=1`
-- `/resource?type=2&filter=brita`
-
-Simply add the query argument names as arguments in the function to use in the endpoint.
-
-```python
-def get(type: int):
-  return {"type": type}  # {"type": 2}
-```
-
-To optionally accept a query parameter define the variable as a python keyword argument (default value).
-
-```python
-def get(type: int, filter=None):
-  return {"type": type, "filter": filter}  # {"type": 2, "filter": "brita"}
-```
-
-#### Request Body
-
-The request body is data sent from a client to your backend. Simply create a class representing the data in your body, and use the class as a type hint for the function argument in your endpoint.
-
-```python
-from typing import Optional
-from pydantic import BaseModel
-
-# The class for the  body to be matched
-class ItemInBody(BaseModel):
-  name: str
-  email: str
-  phone: Optional[str] = None
-
-# add the class as a parameter
-def post(item: ItemInBody):
-  return item  # {"name": "Alec", "email": "email@mail.com", "phone": "123-456-7890"}
-```
-
-To test this we can use a tool like [Postman](https://www.postman.com), the Shortstack CLI, or you can use Shorstack's `endpoint runner` at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
-
-```json
-{ "name": "Alec", "email": "email@mail.com", "phone": "123-456-7890" }
-```
-
-Press the play button and you should see the `ItemInBody` type sent back as a json response.
-
-To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
-
-Hint: You can nest pydantic models.
-
-Hint: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
-
-#### Request Files
-
-To receive files sent as form data you can declare an argument with default value of `File(...)`.
-
-```python
-from fastapi import File
-import file
-
-def post(file_contents: bytes = File(...))
-
-  # We're using our built in file uploader
-  # see below for documentation on it
-  link = file.upload(file_contents)
-
-  return {"file_url": link}
-```
-
-You can specify file type as `UploadFile` to acess file meta data and handle the file more efficiently. See all of `UploadFile`'s [attributes here](https://fastapi.tiangolo.com/tutorial/request-files/#uploadfile).
-
-```python
-from fastapi import File, UploadFile
-import file
-
-await def post(uploaded_file: UploadFile = File(...))
-
-  file_contents = await uploaded_file.read()
-
-  link = file.upload(file_contents)
-
-  return {"file_url": link, "file_name": uploaded_file.filename}
-```
-
-To handle multiple uploaded files, type hint the parameter as a `List`.
-
-```python
-from typing import List
-from fastapi import File, UploadFile
-import file
-
-await def post(uploaded_files: List[UploadFile] = File(...))
-
-  return {"file_names": [f.filename for f in uploaded_files]}
-```
-
-### Responses
-
-Http responses are used to send data back to the client. Responses include a body, headers, cookies, and a status code.
-
-As you have seen you can create a response by returning from an endpoint handler. By default the response status code is `200`. The object returned will be used as the body.
-
-To return a custom response you can return a Starlette response object. Read more about [Starlette response objects here](https://www.starlette.io/responses/).
-
-```python
-from fastapi.responses import JSONResponse
-
-def post():
-  return JSONResponse(status_code=201, content={"message": "created"})
-```
-
-## Shared Code
-
-You'll notice each endpoint editor has two tabs. The endpoint handlers are defined under _*Endpoint Code*_. _Shared Code_ allows you to construct functions and classes that are accessible by any endoint in a project.
-
-![image](static/docsMedia/sharedCode1.png ":size=550")
-
-You can access the shared code via the `shared` object in any endpoint. So the following will return pancakes
-
-```python
-import shared
-
-def get():
-  return {"breakfast": shared.breakfast}  # {"breakfast": "pancakes"}
-```
-
-## Variables
-
-- `variables` is the Shortstack secrets/environment variables manager. You can access it [here](https://app.getshortstack.com/variables)
-
-  1. Add any environment variable or secret on the Variables page. Note: these variables are protected per project.
-     ![image](static/docsMedia/variables1.png ":size=550")
-
-  2. You can use any of your variables by the `variables` object in your endpoint code.
-     For example:
-
-  ```python
-    variables.THIS_IS_MY_KEY
-    def get():
-      return {"var": variables.THIS_IS_MY_KEY}
-  ```
-
-## Shortstorage
-
-- `storage` is a dictionary for you to persist data. It's a bootstrapped database inspired by localStorage. It's available across all of your endpoints. Go to [Your Storage](https://app.getshortstack.com/storage) to initialize or edit objects. For example, let's create a new list to store phone numbers:
-
-  1. Hover your cursor over storage and click on the '+' icon that appears
-     ![image](static/docsMedia/step1.png ":size=550")
-  2. Name this list. We'll call it numbers
-     ![image](static/docsMedia/step2.png ":size=550")
-  3. Note the data type defaults to NULL. Hover your cursor over NULL and click on the edit(pencil) that appears
-     ![image](static/docsMedia/step3.png ":size=550")
-  4. Replace null with empty brackets for a list and click the purple check on the right. Make sure the click the check next to [ ... ] to save the data type as a list instead of string
-     ![image](static/docsMedia/step4.png ":size=550")
-
-  Yay! Your storage now has a list called numbers ready to use :)
-  In an endpoint, the following code would add phone numbers to the list!
-
-  ```python
-  # /endpoint?number=415555555
-  state["numbers"].append(params.get("number"))
-  ```
-
-# Shortstack Tools
-
-Shortstack comes with many services and out-of-the-box! Rather than waste time making accounts, managing multiple bills, configuring services, etc, you can just code :)
-
-## SMS
-
-- `sms(number: string, message: string)` is a simple way to send SMS messages. It comes from a real 10-digit number (not a short code). 2way texting support coming soon!
-
-  ```python
-  # Example:
-  sms("415555555", "hello from shortstack!")
-
-  ```
-
-  Or try it with a query parameter!
-
-  ```python
-  def main(params, state, request):
-      # /endpoint?number=415555555
-      sms(params.get("number"), "hello from shortstack!")
-
-      # your endpoint response
-      response_body = {sent: True} #confirm that you sent the text
-      status_code = 200
-      return response_body, status_code
-  ```
-
-## Upload Files
-
-- `upload_blob(blob)` is a file uploader. Call this function with the blob and it will return a URL to access it. You can store this URL in state or simply return it from the endpoint.
-
-```python
-# POST /endpoint
-
-def main(params, state, request):
-    # your code here
-    file = request.files[“file”] # process the file from the request
-    file_bytes = file.read()
-    link = upload_blob(file_bytes) # call the Shortstack upload_blob function which returns a url
-    # your endpoint response
-    response_body = {“link”: link}
-    status_code = 200
-    return response_body, status_code
-```
-
-# Examples
-
-## Upload a Image
-
-So let's upload this picture of our puppy ![Toulouse](static/docsMedia/Toulouse.JPG ":size=150")
-
-POST /myEndpoint
-
-```json
-{
-file: (the file)
-}
-```
-
-The endpoint will respond with
-
-```json
-{
-  "uploaded": True,
-  "fileName": Toulouse.JPG,
-  "fileURL": LINK_TO_TOULOUSE
-}
-```
-
-Since this was a file upload, we could just add the file directly
-as a function paremter `def post(file = File(...))`
-
-## Use of multiple parameter types
-
-If we want to send more meta data alongn with the file, we could use a request body with json. To do so all we need to do is declare a pydantic moddel and use it as a type hint for a function argument.
+For query arguments in the previous example, we just used a variable, but JSON bodies can be more complicated, so we can create a class representing the incoming data and pass it in to our `post` function.
 
 ```python
 from pydantic import BaseModel
-from fastapi import File
 
-# The class for the json body to be matched
-class AwesomePhoto(BaseModel):
-  location: str
-  name: str
+# type definition of incoming JSON body
+class NewUser(BaseModel):
+    name: str # yay types!
+    phone: str # yay types!
 
-# Your Endpoint function with the class as a parameter
-def post(photo_meta: AwesomePhoto, file_content = File(...)):
-  link = upload_blob(file_content)
-
-  return {
-  "photo_name": photo_meta.name,
-  "location": photo_meta.location,
-  "file_url": link
-  }
+# pass it in to function
+def post(user: NewUser):
+    return {
+        "status": f"{user.name} says hi!"
+    }
 ```
 
-# Shortstack CLI
+Now let's test it with the following JSON body:
 
-If you have a development environment you like, you might prefer to
-develop there rather than go configure a new one in the browser. We get that! The Shortstack CLI will allow you to do everything the web app lets you do
-
-- create/delete endpoints
-- run them in the remote environment
-- view logs
-- add packages
-- anything\* else you can do in the web app :)
-
-\* almost anything
-
-## Installation
-
-Probably something like
-
-Mac OS:
-
-```zsh
-$ brew install stack-cli
+```json
+{
+  "name": "Shortstack",
+  "phone": "4158180207"
+}
 ```
 
-Windows:
+> CLI: create a new json file `touch input.json` and edit it with the contents. `stack run MyEndpoint POST --body /pathTo/input.json`. With shell autocomplete enabled, you can autocomplete the endpoint name, the HTTP request type, and the available json files.
 
-```zsh
-$ npm install stack-cli
+> Webapp: select POST instead of GET from the drop down, select JSON for the payload type.
+
+```json
+{
+  "status": "Shortstack says hi!"
+}
 ```
 
-## Getting Started
+We're defining a [Pydantic](https://pydantic-docs.helpmanual.io) model to define what our data should look like. Read more
+<a href="/#/full?id=request-body" target="_blank">here</a>
 
-Now that you have the CLI installed, you'll need to initialize to your stack account.
+Next we'll notify you everytime a new user gets created!
 
-### Authenticate:
+### Get an SMS text every signup!
 
-First authenticate yourself
+Shortstack comes preconfigured with a lot of out-of-the-box functionality such as SMS. To send texts, just `import sms` and use `sms.send`. Read more
+<a href="/#/full?id=shortstack-tools" target="_blank">here</a>
 
-```zsh
-stack init
+```python
+from pydantic import BaseModel
+import sms
+
+class NewUser(BaseModel):
+    name: str # yay types!
+    phone: str # yay types!
+
+def post(user: NewUser):
+    sms.send("4158180207", f"{user.name} created an account!")
+    return {
+        "status": f"{user.name} says hi!"
+    }
 ```
 
-### Initialize
+Hit the endpoint again and you should get a text!
 
-Once authenticated, you'll need to initialize
+In just a few minutes you were able to get live, deployed, endpoints and SMS functionality! No configuration needed :tada:
 
-```zsh
-stack initialize
+### Use storage to persist data
+
+The next step to your MVP is persisting data between endpoint calls. We can do this with the Shortstorage object.
+<a href="/#/full?id=shortstorage" target="_blank">Read more about Shortstorage here.</a>
+
+```python
+    from pydantic import BaseModel
+    import sms
+
+    class NewUser(BaseModel):
+        name: str # yay types!
+        phone: str # yay types!
+
+    def post(user: NewUser):
+        if state['users'] == None:
+            state['users'] = []
+>       state['users'].append(user)
+        sms.send("4158180207", f"{user.name} created an account!")
+        return {
+            "status": f"{user.name} says hi!"
+        }
 ```
 
-This will create a local directory at ~/GetShortstack with a folder per projecct. In each project folder, you'll find the endpoints, your shared code, and variables as individual .py files.
+Every time you hit the endpoint, you'll store the users! If you're in the webapp, click on "storage" from the navbar to view the state object.
 
-### Set Environment
+We can make a simple API to build a dashboard with your users. Create a new endpoint with the following:
 
-Similar to the project dropdown from the web app, you'll need to specify which project you're working with. This allows you to add packages, variables/secrets, and endpoints; respecting each project's isolated runtime.
+```python
 
-```zsh
-stack set ProjectName
+def get():
+    return {"users": state['users']}
+
 ```
 
-You can view active environment settings with the `status` command:
+> Note: Shortstorage is a great way to get up and running, but it won't scale as elegantly as your endpoints. We're consistently improving it, but if you have an intense amount of data, it might be best to hook up your own database.
 
-```zsh
-stack status
+### Shared Code
+
+Every Shortstack project has a Shared Code file, accessible by every endpoint in the project. This is a good place to isolate the storage code.
+
+<a href="/#/full?id=shared-code" target="_blank">Read more here.</a>
+
+> CLI: every project folder will have a shared.py for shared code
+
+> Webapp: every endpoint editor page has a tab for shared code
+
+Let's move the storage logic to a shared code function
+
+```python
+# shared code
+
+def storeUser(user)
+    if state['users'] == None:
+        state['users'] = []
+    state['users'].append(user)
+
 ```
 
-NOTE: We highly recommend setting up Zsh & autocomplete. It'll let you tab through commands like butter
+Now update the endpoint to use this function. Don't forget the import!
 
-## Creating
+```python
+    from pydantic import BaseModel
+    import sms
+>   import shared
 
-### Add or Remove
+    class NewUser(BaseModel):
+        name: str # yay types!
+        phone: str # yay types!
 
-- `Packages`: You can add any package installable by Pip
-  ex: to install numpy
-
-```zsh
-stack add package numpy
-stack remove package numpy
+    def post(user: NewUser):
+>       shared.storeUser(user)
+        sms.send("4158180207", f"{user.name} created an account!")
+        return {
+            "status": f"{user.name} says hi!"
+        }
 ```
 
-- `Endpoints`: You can create new endpoints in the active project
+Voila! Now we can modify our storage logic without disrupting your endpoint :)
 
-```zsh
-stack add endpoint MyEndpointName
-stack remove endpoint MyEndpointName
+### Variables
+
+In the examples above, I've been using my phone number in the code.
+This is a bad practice, so we can use Variables!
+<a href="/#/full?id=variables" target="_blank">Read more here.</a>
+(P.S. that is my real number, shoot me a text and let me know how it's going!)
+
+> CLI: run `stack add variable PHONENUMBER` and it will prompt you for the value.
+
+> Web app: Click on `Variables` on the nav bar on the left. Add the new variable to the table.
+
+Now we just need to import variables in our code and we can use the values!
+
+```python
+    from pydantic import BaseModel
+    import sms
+    import shared
+>   import variables
+
+    class NewUser(BaseModel):
+        name: str # yay types!
+        phone: str # yay types!
+
+    def post(user: NewUser):
+        shared.storeUser(user)
+>       sms.send(variables.PHONENUMBER, f"{user.name} created an account!")
+        return {
+            "status": f"{user.name} says hi!"
+        }
 ```
 
-- `Variables`: You can add variables/secrets from [the app](https://app.getshortstack.com/variables) or right from the command line
+### Final Thoughts
 
-```zsh
-stack add variable NewVar
-stack remove variable NewVar
-```
+Hopefully this was a useful introduction to Shortstack!
+<a href="/#/full" target="_blank">The full docs are here.</a>
 
-Then follow the prompt for the variable value. Note: while you can update the value at any time, we never reveal the value for your security.
+Do you have any questions? Feature requests? Something missing from the docs? Wanna chat?
 
-### Create New Project
+Talk to us!
 
-You can create a new project with
-
-```zsh
-stack new project MyNewProject
-```
-
-Note: this does not set it as the active project. You'll need to use `stack set` for that:
-
-```zsh
-stack set project MyNewProject
-```
-
-## Running
-
-### List
-
-You can use the `list` command to list available projects, packages, and endpoints. See below
-
-View available projects:
-
-```zsh
-stack list project
-```
-
-View packages added to the environment. You can `remove` them or `add` new ones.
-
-```zsh
-stack list package
-```
-
-View endpoints and their associated URLs. You can execute them with `run`.
-
-```zsh
-stack list endpoint
-```
-
-### Run
-
-You can execute any endpoint right from the terminal.
-
-```zsh
-stack run MyEndpoint [GET, POST, PUT, DELETE] --args --body *.json
-```
-
-The third argument is the HTTP request type.
-Add query args with --args, or -a
-Add any json file in the request body with --body or -b
-
-To make a GET request:
-
-```zsh
-stack run MyEndpoint GET --a  message=Hello
-```
-
-Makes a GET call to `/MyEndpoint?message=Hello`
-
-To make a POST request:
-
-```zsh
-stack run MyEndpoint POST --b  body.json
-```
-
-Makes a POST call to `/MyEndpoint` with the body.json
-
-### Logs
-
-After running an endpoint, Shortstack automatically collects logs and standard out! View them by running the `logs` command:
-To view all the logs of a project, run:
-
-```zsh
-stack logs
-```
-
-You can also view the logs of an individual endpoint
-
-```zsh
-stack logs endpoint MyEndpoint
-```
-
-## Syncronizing
-
-Now that you've made changes locally, it's time to save them so they're syncronized with Shortstack & the web app.
-
-### Diff
-
-To view a difference of what's syncronized with remote, run `diff`:
-
-```zsh
-stack diff
-```
-
-### Override
-
-Use `override` to sync the changes.
-
-To override your local changes with those saved to your Shortstack account, override your local:
-
-```zsh
-stack override local
-```
-
-To override your remote changes with those saved to your local environment, override your remote:
-
-```zsh
-stack override remote
-```
-
-Note: override only syncronizes your active project. You can set the active project with `set`
-
-### Runtime and Environment
-
-Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
-
-# Release Notes
-
-[Latest Version v0.5](/release.md?id=v05)
-
-Older Versions:
-
-[v0.4](/release.md?id=v04)
-
-[v0.3](/release.md?id=v03)
-
-[v0.2](/release.md?id=v02)
-
-# Python Types
-
-[Learn more here](/typehints.md)
+Nader:
+cell: 4158180207
+email: nader+docs@getshortstack.com
