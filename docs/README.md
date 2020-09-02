@@ -223,6 +223,15 @@ Http responses are used to send data back to the client. Responses include a bod
 
 As you have seen you can create a response by returning from an endpoint handler. By default the response status code is `200`. The object returned will be used as the body.
 
+To return a custom response you can return a Starlette response object. Read more about [Starlette response objects here](https://www.starlette.io/responses/).
+
+```python
+from fastapi.responses import JSONResponse
+
+def post():
+  return JSONResponse(status_code=201, content={"message": "created"})
+```
+
 ## Shared Code
 
 You'll notice each endpoint has two tabs. The `main` endpoint is under _*Endpoint Code*_. _Shared Code_ belongs to the project level, and can be accessed by any endpoint under that project.
