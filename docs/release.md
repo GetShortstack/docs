@@ -1,3 +1,29 @@
+# v0.5
+
+_released sept 1 2020_
+
+This release was our largest yet, with two breaking changes.
+
+## CLI
+
+This is a huge new change! Install the CLI and use your favorite code editor with Shortstack! Instantly sync your changes, run the endpoints, install packages, and more. All these changes take place in the same remote environment too! So if you install package once, it'll be there forever… well, till you delete it :)
+
+## Handle HTTP Request Types
+
+Rather than specify every endpoint as a GET or POST, we'll pattern match the function name to handle the request type-- So long “main” function! If you have a function in the endpoint called “get", it will be run on a GET request. Wanna handle a PUT? Just add a function called “put”! 
+(note: this is 1 of 2 breaking changes in this release. We no longer support "main" function as the entry point.)
+
+## Super Simple Arguments
+
+It's always an awkward dance to access the data being sent over to an endpoint. Now you can just put the data as input to your function. “get(x)” will automatically get you x from the query args or send an error if it doesn't exist. You can even define classes to represent a JSON body and let Shortstack do the rest! 
+(note: this is the 2nd, and final, breaking change in this release. We no longer use the params object in functions since you can just use the variable directly)
+
+## Stability and Improvements
+
+- We load tested the server to new heights, it's ready to scale!
+- We removed logs from the last feature since we'd rather integrate with a service and do it right. This was a tough decision but we feel it's for the better.
+- Fully functional API Swagger docs are automatically generated for each project. View that at project_domain.getshortstack.com/docs
+
 # v0.4
 
 _released aug 13 2020_

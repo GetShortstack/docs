@@ -531,10 +531,18 @@ stack override remote
 
 Note: override only syncronizes your active project. You can set the active project with `set`
 
-# [Release Notes](/release.md)
+# Release Notes
 
-# [Python Types](/typehints.md)
+[Latest Version v0.5](/release.md?id=v05)
 
-```
+Older Versions:
 
-```
+[v0.4](/release.md?id=v04)
+
+[v0.3](/release.md?id=v03)
+
+[v0.2](/release.md?id=v02)
+
+# Python Types
+
+[Learn more here](/typehints.md)
