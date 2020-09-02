@@ -138,22 +138,22 @@ def get(resource_id: int):
 
 Hint: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
 
-#### Query Params
+#### Query Arguments
 
-Query params are parameters found at the end of url after `?` They are key value pairs joined with `=` character and separated by `&`.
+Query Arguments are parameters found at the end of url after `?` They are key value pairs joined with `=` character and separated by `&`.
 Ex:
 
 - `/resource?id=1`
 - `/resource?type=2&filter=brita`
 
-Simply add the query param names as arguments in the function to use in the endpoint.
+Simply add the query argument names as arguments in the function to use in the endpoint.
 
 ```python
 def get(type: int):
   return {"type": type}  # {"type": 2}
 ```
 
-To optionally accept a query parameter define the variable as a python keyword argument.
+To optionally accept a query parameter define the variable as a python keyword argument (default value).
 
 ```python
 def get(type: int, filter=None):
@@ -162,9 +162,7 @@ def get(type: int, filter=None):
 
 #### Request Body
 
-The request body is data sent from a client to your backend. To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
-
-Define your body with a pydantic model then use the class as a type hint for function argument to use the body in the endpoint.
+The request body is data sent from a client to your backend. Simply create a class representing the data in your body, and use the class as a type hint for the function argument in your endpoint.
 
 ```python
 from typing import Optional
@@ -181,7 +179,7 @@ def post(item: ItemInBody):
   return item  # {"name": "Alec", "email": "email@mail.com", "phone": "123-456-7890"}
 ```
 
-To test this we can use a tool like [Postman](https://www.postman.com) or you can use Shorstack's `endpoint runner` which you will find at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
+To test this we can use a tool like [Postman](https://www.postman.com), the Shortstack CLI, or you can use Shorstack's `endpoint runner` at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
 
 ```json
 { "name": "Alec", "email": "email@mail.com", "phone": "123-456-7890" }
@@ -189,13 +187,15 @@ To test this we can use a tool like [Postman](https://www.postman.com) or you ca
 
 Press the play button and you should see the `ItemInBody` type sent back as a json response.
 
+To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
+
 Hint: You can nest pydantic models.
 
 Hint: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
 
 #### Request Files
 
-To receive files sent as form data you can declare a keyword argument with default value of `File(...)`.
+To receive files sent as form data you can declare an argument with default value of `File(...)`.
 
 ```python
 from fastapi import File
@@ -254,7 +254,7 @@ def post():
 
 ## Shared Code
 
-You'll notice each endpoint has two tabs. The `main` endpoint is under _*Endpoint Code*_. _Shared Code_ belongs to the project level, and can be accessed by any endpoint under that project.
+You'll notice each endpoint has two tabs. The endpoint is under _*Endpoint Code*_. _Shared Code_ belongs to the project level, and can be accessed by any endpoint under that project.
 
 ![image](static/docsMedia/sharedCode1.png ":size=550")
 
@@ -457,7 +457,7 @@ def get():
       return {"var": variables.THIS_IS_MY_KEY}
   ```
 
-## Storage
+## Shortstorage
 
 - `storage` is a dictionary for you to persist data. It's a bootstrapped database inspired by localStorage. It's available across all of your endpoints. Go to [Your Storage](https://app.getshortstack.com/storage) to initialize or edit objects. For example, let's create a new list to store phone numbers:
 
