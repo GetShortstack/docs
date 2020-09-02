@@ -277,24 +277,224 @@ def get():
 
 ## Shortstorage
 
-- `storage` is a dictionary for you to persist data. It's a bootstrapped database inspired by localStorage. It's available across all of your endpoints. Go to [Your Storage](https://app.getshortstack.com/storage) to initialize or edit objects. For example, let's create a new list to store phone numbers:
+Shortstorage is a minimal nosql key value store backed by Dynamodb.
 
-  1. Hover your cursor over storage and click on the '+' icon that appears
-     ![image](static/docsMedia/step1.png ":size=550")
-  2. Name this list. We'll call it numbers
-     ![image](static/docsMedia/step2.png ":size=550")
-  3. Note the data type defaults to NULL. Hover your cursor over NULL and click on the edit(pencil) that appears
-     ![image](static/docsMedia/step3.png ":size=550")
-  4. Replace null with empty brackets for a list and click the purple check on the right. Make sure the click the check next to [ ... ] to save the data type as a list instead of string
-     ![image](static/docsMedia/step4.png ":size=550")
+Persist data between api calls within a project without further configuration. It is not designed currently for high throughput applications.
 
-  Yay! Your storage now has a list called numbers ready to use :)
-  In an endpoint, the following code would add phone numbers to the list!
+> **Technical Detail**: The database supports eventual consistency
 
-  ```python
-  # /endpoint?number=415555555
-  state["numbers"].append(params.get("number"))
-  ```
+### Python Usage
+
+Shorstorage implements a very similar API to [python's Dictionary type](https://realpython.com/python-dicts/).
+
+Access Shortstorage by importing `storage` and using `storage_context` as the default value for a keyword argument in an endpoint.
+
+```python
+import storage
+
+def get(storager = storage.storage_context()):
+  val = storager["key"]  # get item
+
+  val = storager.get("key", "default")  # get item and return 'default' if 'key' does not exist
+
+  storager["key"] = "value"  # set 'value' to 'key'
+
+  val = storager.setdefault("key", "value")  # set 'value' if 'key' does not exist return stored value
+
+  return {"value": val}
+```
+
+> **Hint**: As you access objects in shortstorage they are cached in each request. Once the endpoint is ready to repond, the changes are saved to the database.
+
+> **Technical Detail**: The `storage_context` is implemented as a dependency/dependable. Read more about [FastAPI's lightweight depedency injection here](https://fastapi.tiangolo.com/tutorial/dependencies/).
+
+#### Collections
+
+By default when using Shortstorage all items are grouped under the `default` collection. To group objects together, declare different collections by specificying the name of the collection as the parameter of `storage_context`.
+
+```python
+from storage import storage_context
+
+def get(user_store = storage_context("users"), item_store = storage_context("items")):
+  user_id = "user_id"
+
+  email = user_store[user_id]["email"]
+
+  items = item_store[user_id]
+
+  return {"email": email, "items": items}
+```
+
+### Using the View Editor
+
+1. Hover your cursor over storage and click on the '+' icon that appears
+   ![image](static/docsMedia/step1.png ":size=550")
+2. Name this list. We'll call it numbers
+   ![image](static/docsMedia/step2.png ":size=550")
+3. Note the data type defaults to NULL. Hover your cursor over NULL and click on the edit(pencil) that appears
+   ![image](static/docsMedia/step3.png ":size=550")
+4. Replace null with empty brackets for a list and click the purple check on the right. Make sure the click the check next to [ ... ] to save the data type as a list instead of string
+   ![image](static/docsMedia/step4.png ":size=550")
+
+Yay! Your storage now has a list called numbers ready to use :)
+In an endpoint, the following code would add phone numbers to the list!
+
+### Shortstorage API reference
+
+#### Types
+
+The following types can be used as keys to Shortstorage
+
+```python
+StorageKey = typing.Union[int, str, bool, float]
+```
+
+The following is supported as values returned from Shortstorage
+
+```python
+StorageValue = typing.Union[StorageKey, None, List, Dict]
+```
+
+#### Dependable
+
+```python
+storage.storage_context(collection: str="default") -> fastapi.Depends
+```
+
+- Parameters
+  - collection: a string to designate what collection of objects the storage context will be
+- Returns: A fastapi dependable that creates a StorageContext yields the StorageContext then saves all changes made.
+
+#### StorageContext
+
+```python
+class StorageContext:
+```
+
+The StorageContext api is similar to a python dict object. Objects are ordered by insertion.
+
+```python
+__getitem__(key: StorageKey) -> StorageValue
+```
+
+Implements `storage_context[key]` bracket notation. Raises a KeyError if item does not exist.
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+- Returns: The object in storage if it exists in cache else retrieves from database
+
+```python
+__setitem__(self, key: StorageKey, value: StorageValue) -> None:
+```
+
+- Parameters
+  - key: A `StorageKey` to be used for retrieval.
+  - value: A `StorageValue` which is used as its value.
+- Returns: The object in storage if it exists in cache else retrieves from database
+
+```python
+commit() -> None
+```
+
+Manually save session cache to database. This is automatically called after you return from a endpoint handler.
+
+```python
+get(key: StorageKey, default: Optional[StorageValue]=None) -> StorageValue
+```
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+  - default: the value to return if the object does not exist
+- Returns: The object in storage if it exists in cache else retrieves from database
+
+```python
+update(to_update: Dict[StorageKey, StorageValue]) -> None
+```
+
+- Parameters
+  - to_update: a dict to bulk update keys and values in the database
+- Returns: None
+
+```python
+setdefault(key: StorageKey, default_value: StorageValue) -> StorageValue
+```
+
+Sets `default_value` as the value of `key` if key does not exist. Returns the value in the database,
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+  - default: A `StorageValue` to be set if key does not exist
+- Returns: A `StorageValue` object that is the value uses in Shorstorage
+
+```python
+___delitem___(key: StorageKey) -> None
+```
+
+Implements `del storage_context[key]` syntax. Removes object with `key` from Storage.
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+- Returns: None
+
+```python
+pop(key: StorageKey) -> StorageValue
+```
+
+Removes object with `key` from Storage and returns removed object
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+- Returns: `StorageValue` object in db
+
+```python
+clear() -> None
+```
+
+Removes all items from database in collection
+
+```python
+__len__() -> int
+```
+
+Implements `len(storage_context)` syntax. Returns number of items in the collection.
+
+- Returns: An int of how many items are in the collection.
+
+```python
+__contains__(key: StorageKey) -> bool
+```
+
+Implements `key in storage_context` syntax. Returns bool if key exists in collection
+
+- Parameters
+  - key: A `StorageKey` key to retrieve an object
+- Returns: A bool. True if key exists.
+
+```python
+keys() -> Iterable[StorageKey]
+```
+
+Retrieves all keys in a collection
+
+- Returns: An iterable of keys
+
+```python
+values() -> Iterable[StorageValue]
+```
+
+Retrieves all values in a collection
+
+- Returns: An iterable of `StorageValue`
+
+```python
+items() -> Iterable[Tuple(StorageKey, StorageValue)]
+```
+
+Retrieves all objects as an iterable tuple of StorageKey, StorageValue in a collection
+
+- Returns: An iterable of `Tuple(StorageKey, StorageValue)`
+
+> **Technical Detail**: Currently each project uses a single Dynamodb partition key. This works for most use cases but will serve as bottle neck for high throughput applications.
 
 # Shortstack Tools
 
@@ -370,7 +570,7 @@ as a function paremter `def post(file = File(...))`
 
 ## Use of multiple parameter types
 
-If we want to send more meta data alongn with the file, we could use a request body with json. To do so all we need to do is declare a pydantic moddel and use it as a type hint for a function argument.
+If we want to send meta data along with a file, we could use a request body with json and File object. To do so all we need to do is declare a pydantic model and use it as a type hint for a function argument.
 
 ```python
 from pydantic import BaseModel
@@ -618,3 +818,7 @@ Older Versions:
 
 [Learn more here](/typehints.md)
 s
+
+```
+
+```
