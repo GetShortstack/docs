@@ -65,12 +65,11 @@ def get():
 
 5. Press the save endpoint button to deploy your code.
 6. Run the endpoint by copying the url at the top of the page and entering it in a new tab or by pressing the play button at the bottom of the page.
-   Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6`
 7. You should see `{"message": "hello world"}` as the response :)
 
-## Defining Endpoints
+> **Hint**: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6` ## Defining Endpoints
 
-Hint: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Starlette](https://www.starlette.io) and supports much of its API. To dig deeper in request/response, validation and documenation it might be helpful to checkout their docs.
+> **Technical Detail**: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Starlette](https://www.starlette.io) and supports much of its API. To dig deeper in request/response, validation and documenation it might be helpful to checkout their docs.
 
 ### Handling http methods
 
@@ -99,7 +98,7 @@ def post():
 
 To change an endpoint's url suffix to something more readable and useful, click on the `edit metadata` tab at the bottom of the editor and modify the url path. Once satisfied press save.
 
-Hint: Endpoints are immediately accessible by its url after it is saved.
+> **Hint**: Endpoints are immediately accessible by its url after it is saved.
 
 ### Sending data to your endpoints
 
@@ -128,7 +127,7 @@ def get(resource_id: int):
   return {"resource_id": resource_id}  # {"resource_id": 1}
 ```
 
-Hint: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
+> **Hint**: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
 
 #### Query Arguments
 
@@ -181,9 +180,9 @@ Press the play button and you should see the `ItemInBody` type sent back as a js
 
 To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
 
-Hint: You can nest pydantic models.
+> **Hint**: You can nest pydantic models.
 
-Hint: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
+> **Hint**: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
 
 #### Request Files
 
@@ -279,9 +278,11 @@ def get():
 
 Shortstorage is a minimal nosql key value store backed by Dynamodb.
 
-Persist data between api calls within a project without further configuration. It is not designed currently for high throughput applications.
+Persist data between api calls within a project without further configuration. Shorstorage is not designed for high throughput applications. We recommend configuring a database designed for you applications read/write profile.
 
 > **Technical Detail**: The database supports eventual consistency
+
+> **Technical Detail**: Currently each project uses a single Dynamodb partition key. This works for most use cases but can be a bottle neck for high throughput applications.
 
 ### Python Usage
 
@@ -494,8 +495,6 @@ Retrieves all objects as an iterable tuple of StorageKey, StorageValue in a coll
 
 - Returns: An iterable of `Tuple(StorageKey, StorageValue)`
 
-> **Technical Detail**: Currently each project uses a single Dynamodb partition key. This works for most use cases but will serve as bottle neck for high throughput applications.
-
 # Shortstack Tools
 
 Shortstack comes with many services and out-of-the-box! Rather than waste time making accounts, managing multiple bills, configuring services, etc, you can just code :)
@@ -543,30 +542,9 @@ def main(params, state, request):
 
 # Examples
 
-## Upload a Image
+## Upload an Image
 
-So let's upload this picture of our puppy ![Toulouse](static/docsMedia/Toulouse.JPG ":size=150")
-
-POST /myEndpoint
-
-```json
-{
-file: (the file)
-}
-```
-
-The endpoint will respond with
-
-```json
-{
-  "uploaded": True,
-  "fileName": Toulouse.JPG,
-  "fileURL": LINK_TO_TOULOUSE
-}
-```
-
-Since this was a file upload, we could just add the file directly
-as a function paremter `def post(file = File(...))`
+...
 
 ## Use of multiple parameter types
 
