@@ -1,11 +1,12 @@
 # Shortstack
 
-Shortstack is a development environment that allows you to rapidly build and scale API's. Shortstack aims to optimize for developer time without the tradeoff of vendor lockin.
+Shortstack is a development environment that allows you to rapidly build and scale APIs. Shortstack aims to optimize for developer time without the tradeoff of vendor lockin.
 
 **Highlighted Features**:
 
 - **Production ready by default**: Scale without extra configuration or additional knowledge
 - **Deployless**: Deployments just happen instantly when you save.
+- **Configureless**: We handle the environments and infrastructure. Whether you're coding from the CLI and your local environment or the web app, the environment is ready to go.
 - **Ergonomic request/response validation**: Use python3 type hints to define the shape of your request args and body.
 - **Openapi by default**: Openapi specification is automatically generated for you as you write and annotate your endpoints
 - **Secrets management**: Store your applications securely without extra effort
@@ -63,7 +64,7 @@ def get():
 
 5. Press the save endpoint button to deploy your code.
 6. Run the endpoint by copying the url at the top of the page and entering it in a new tab or by pressing the play button at the bottom of the page.
-   Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6` at the top of the page.
+   Hint: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6`
 7. You should see `{"message": "hello world"}` as the response :)
 
 ## Defining Endpoints
@@ -72,7 +73,7 @@ Hint: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Sta
 
 ### Handling http methods
 
-- To handle different http methods for a given url, create new functions named with the http verb you would like to handle. The following methods are currently supported.
+- To handle different http methods for a given url, create new functions named with the http request type you would like to handle. The following methods are currently supported.
   - get
   - post
   - put
@@ -98,7 +99,16 @@ To change an endpoint's url suffix to something more readable and useful, click 
 
 Hint: Endpoints are immediately accessible by its url after it is saved.
 
-### Path params
+### Sending data to your endpoints
+
+There are currently 4 supported ways to send data to your endpoints.
+
+- Path Parameters
+- Query Arguments
+- Request Body
+- Request Files
+
+#### Path params
 
 Path params are parameters encoded as part of the url enclosed with `/`.
 
@@ -107,7 +117,7 @@ Ex:
 - `/resource/1`
 - `/resource/2/do_something`
 
-To extract the resource id (ex. 1, 2) for our function to use, we need to modify the endpoint path. Click on the `edit metadata` tab at the bottom of the editor and modify the url path to `/resource/{resource_id}`.
+To extract the value (ex. 1, 2) for our function to use, we need to modify the endpoint path. Click on the `edit metadata` tab at the bottom of the editor and modify the url path to `/resource/{resource_id}`.
 
 Next add `resource_id` as an argument to your function definition to use it.
 
@@ -118,7 +128,7 @@ def get(resource_id: int):
 
 Hint: The type hint of `int` used will typecast the parameter or throw a http 422 error with a message on what was invalid.
 
-### Query Params
+#### Query Params
 
 Query params are parameters found at the end of url after `?` They are key value pairs joined with `=` character and separated by `&`.
 Ex:
@@ -140,7 +150,7 @@ def get(type: int, filter=None):
   return {"type": type, "filter": filter}  # {"type": 2, "filter": "brita"}
 ```
 
-### Request Body
+#### Request Body
 
 The request body is data sent from a client to your backend. To access and validate a json request body we use [Pydantic](https://pydantic-docs.helpmanual.io) models. The pydantic classes allow us to define what our data should be in plain python3 type hints.
 
@@ -173,7 +183,7 @@ Hint: You can nest pydantic models.
 
 Hint: It is best practice to not use the http `GET` method to send response body's. It is undefined behavior in the specifications.
 
-### Request Files
+#### Request Files
 
 To receive files sent as form data you can declare a keyword argument with default value of `File(...)`.
 
