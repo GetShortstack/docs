@@ -74,16 +74,16 @@ Hint: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Sta
 
 ### Handling http methods
 
-- # To handle different http methods for a given url, create new functions named with the http request type you would like to handle. The following methods are currently supported.
+To handle different http methods for a given url, create new functions named with the http request type you would like to handle. The following methods are currently supported.
 
-  - get
-  - post
-  - put
-  - delete
-  - options
-  - head
-  - patch
-  - trace
+- get
+- post
+- put
+- delete
+- options
+- head
+- patch
+- trace
 
 Example:
 
@@ -246,19 +246,7 @@ def post():
 
 ## Shared Code
 
-You'll notice each endpoint has two tabs. The endpoint is under _*Endpoint Code*_. _Shared Code_ belongs to the project level, and can be accessed by any endpoint under that project.
-
-![image](static/docsMedia/sharedCode1.png ":size=550")
-
-You can access the shared code via the `shared` object in any endpoint. So the following will return pancakes
-
-```python
-shared.breakfast # will return "pancakes"
-```
-
-## Shared Code
-
-You'll notice each endpoint editor has two tabs. The endpoint handlers are defined under _*Endpoint Code*_. _Shared Code_ allows you to construct functions and classes that any endoints can use in a project.
+You'll notice each endpoint editor has two tabs. The endpoint handlers are defined under _*Endpoint Code*_. _Shared Code_ allows you to construct functions and classes that are accessible by any endoint in a project.
 
 ![image](static/docsMedia/sharedCode1.png ":size=550")
 
@@ -628,8 +616,4 @@ Older Versions:
 
 # Python Types
 
-# [Learn more here](/typehints.md)
-
-# [Release Notes](/release.md)
-
-# [Python Types](/typehints.md)
+[Learn more here](/typehints.md)

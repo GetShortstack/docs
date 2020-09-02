@@ -11,18 +11,44 @@ We totally get that sometimes, frameworks are just too limiting. We've been ther
 We hope you love it
 -Nader & Alec
 
-This doc will go over the core features of Shortstack by building a sign up form that texts you everytime someone signs up. ETA: 10 min
+**Highlighted Features**:
 
-[ ] Create basic endpoint
-[ ] GET call with query arguments
-[ ] POST call with JSON body
-[ ] Outta the box functionality: SMS
-[ ] Use State to link them
-[ ] View Logs
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
+- **Production ready by default**: Scale without extra configuration or additional knowledge
+- **Deployless**: Deployments just happen instantly when you save.
+- **Configureless**: We handle the environments and infrastructure. Whether you're coding from the CLI and your local environment or the web app, the environment is ready to go.
+- **Ergonomic request/response validation**: Use python3 type hints to define the shape of your request args and body.
+- **Openapi by default**: Openapi specification is automatically generated for you as you write and annotate your endpoints
+- **Secrets management**: Store your applications secrets securely without extra effort
+- **Package management**: Use the power of python's community with 3rd party packages found on pypi
+- **Shortstore:** A super simple nosql database to prototype your applications -- backed by Dynamodb.
+
+**Coming Soon**:
+
+Our roadmap is constantly evolving with feedback from our users. Here are some of the things we are thinking about.
+
+- **Eject:** Eject your project at any point in your project to host it yourself and get under the hood. Access all the configuration details and more without worrying about them at the start of your project.
+- **Project Environments:** Create multiple different isolated environments to develop or experiment on your APIs ex. (staging, prod, dev)
+- **Cron Jobs** Create and manage cron jobs without any extra setup.
+- **Application monitoring, alerting:** get crash alerts and performance monitoring out of the box or hook up (Sentry, APM, etc).
+- **Robust Logging and Querying** Search and query for relevant logs to quickly debug your application
+
+Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
+
+**Project Status**
+
+[✓] Alpha: We are testing Shortstack with a small set of users.
+
+[✓] Public Alpha: Join our waitlist and we will get you access as soon as we can. We hope you build something great! The platform still has kinks please help us iron them out.
+
+[ ] Public Beta: Anyone can create an account. API becomes stable.
+
+[ ] Public launch: Stable for enterprise use cases.
+
+### This doc
+
+will go over the core features of Shortstack by building a sign up form that texts you everytime someone signs up.
+
+**7 steps, eta: 10 min**
 
 ### Setup
 
@@ -41,6 +67,8 @@ The CLI is supported on WSL. Please follow the instructions here to install.
 
 ### Create a basic endpoint
 
+**Step 1 of 7**
+
 A huge benefit of Shortstack is that the concept of deploying has been abstracted. Simply create an endpoint, and by default, it's available.
 
 From the webapp: click "+" to create an endpoint. Give it a name, and click save!
@@ -54,23 +82,12 @@ Boom, your endpoint is saved and hosted!
 
 Now let's make the endpoint do something.
 
-[✓] Create basic endpoint
-[ ] GET call with query arguments
-[ ] POST call with JSON body
-[ ] Outta the box functionality: SMS
-[ ] Use State to link them
-[ ] View Logs
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
+### GET request with a query args
 
-### Handle a GET request with a query parameter
-
-Simply add the parameter to the function and use it like a variable!
+To accept a query argument, simply add the argument to the function and use it like a variable!
 
 ```python
-def GET(greeting):
+def get(greeting):
   return {"response": f"{greeting} world!"}
 ```
 
@@ -89,45 +106,33 @@ The response should be as follows:
 {"response": "marhaba world"} // GET /endpointurl?greeting=marhaba
 ```
 
-Your endpoint can now accept data! Now let's do a POST.
+Read more about how this works
+<a href="/#/?id=query-arguments" target="_blank">here</a>
 
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[ ] POST call with JSON body
-[ ] Outta the box functionality: SMS
-[ ] Use State to link them
-[ ] View Logs
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
+Your endpoint can now accept data! Now let's do a POST.
 
 ### POST call with JSON body
 
-Notice how your endpoint function name was called `get`. You can type any valid HTTP request type, and Shortstack will pattern match the appropriate function based on the incoming HTTP request. So to create a POST call, we just create a function called `post`.
+The function name from the previous example was `get`. You can use any valid HTTP request type, and Shortstack will pattern match the appropriate function based on the incoming HTTP request. Read more
+<a href="/#/?id=handling-http-methods" target="_blank">here</a>
+. So to handle a POST call, we just add a function called `post`.
 
 ```python
 def post():
     return {}
 ```
 
-For query parameters, we just used a variable, but JSON bodies can be more complicated, so let's create a class to pass in to our `post` function.
+For query arguments in the previous example, we just used a variable, but JSON bodies can be more complicated, so we can create a class representing the incoming data and pass it in to our `post` function.
 
 ```python
 from pydantic import BaseModel
 
-class NewUser(BaseModel):
-    name: str # yay types!
-    phone: str # yay types!
-```
-
-```python
-from pydantic import BaseModel
-
+# type definition of incoming JSON body
 class NewUser(BaseModel):
     name: str # yay types!
     phone: str # yay types!
 
+# pass it in to function
 def post(user: NewUser):
     return {
         "status": f"{user.name} says hi!"
@@ -153,20 +158,15 @@ Now let's test it with the following JSON body:
 }
 ```
 
+We're defining a [Pydantic](https://pydantic-docs.helpmanual.io) model to define what our data should look like. Read more
+<a href="/#/?id=request-body" target="_blank">here</a>
+
 Next we'll notify you everytime a new user gets created!
 
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[✓] POST call with JSON body
-[ ] Outta the box functionality: SMS
-[ ] Use State to link them
-[ ] View Logs
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
+### Get an SMS text every signup!
 
-### Out of the box functionality: SMS
+Shortstack comes preconfigured with a lot of out-of-the-box functionality such as SMS. To send texts, just `import sms` and use `sms.send`. Read more
+<a href="/#/?id=shortstack-tools" target="_blank">here</a>
 
 ```python
 from pydantic import BaseModel
@@ -187,39 +187,10 @@ Hit the endpoint again and you should get a text!
 
 In just a few minutes you were able to get live, deployed, endpoints and SMS functionality! No configuration needed :tada:
 
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[✓] POST call with JSON body
-[✓] Outta the box functionality: SMS
-[ ] View Logs
-[ ] Use State to link them
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
-
-### View Endpoint Logs
-
-Getting logs and metrics for your endpoints is typically a hurdle within itself. This is built in to Shortstack!
-
-> Webapp: Go to "Logs" from the navigation bar on the left. You'll see all the server logs per project!
-
-> CLI: `stack logs` views all logs for a project. Optionally filter by endpoitn: `stack logs MyEndpoint` gets logs for the endpoint only
-
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[✓] POST call with JSON body
-[✓] Outta the box functionality: SMS
-[✓] View Logs
-[ ] Use State to link them
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
-
 ### Use storage to persist data
 
-The next step to your MVP is being able to persist data between endpoint calls. We can do this with the storage object.
+The next step to your MVP is persisting data between endpoint calls. We can do this with the Shortstorage object.
+<a href="/#/?id=shortstorage" target="_blank">Read more about Shortstorage here.</a>
 
 ```python
     from pydantic import BaseModel
@@ -250,22 +221,13 @@ def get():
 
 ```
 
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[✓] POST call with JSON body
-[✓] Outta the box functionality: SMS
-[✓] View Logs
-[✓] Use State to link them
-[ ] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
-
-> Note: The storage object does have limitations. Unlike your endpoints, it won't handle scale well. It's a simple and great hack to get a proof of concept up and running. It's a simple dictionary that gets entirely overwritten everytime, so we highly recommend using a real database for your MVP. Let's do that next!
+> Note: Shortstorage is a great way to get up and running, but it won't scale as elegantly as your endpoints. We're consistently improving it, but if you have an intense amount of data, it might be best to hook up your own database.
 
 ### Shared Code
 
-Before we hook up the database, let's isolate the "storage" code by using Shared Code. Shared Code is code that's available to the entire project.
+Every Shortstack project has a Shared Code file, accessible by every endpoint in the project. This is a good place to isolate the storage code.
+
+<a href="/#/?id=shared-code" target="_blank">Read more here.</a>
 
 > CLI: every project folder will have a shared.py for shared code
 
@@ -302,15 +264,48 @@ Now update the endpoint to use this function. Don't forget the import!
         }
 ```
 
-Voila! Now we can swap out the storage logic without disrupting your endpoint :)
+Voila! Now we can modify our storage logic without disrupting your endpoint :)
 
-[✓] Create basic endpoint
-[✓] GET call with query arguments
-[✓] POST call with JSON body
-[✓] Outta the box functionality: SMS
-[✓] View Logs
-[✓] Use State to link them
-[✓] Move state logic to Shared Code
-[ ] Swap state for real database
-[ ] Use Variables to do that^ securely
-[ ] Auth flow with cotter (?)
+### Variables
+
+In the examples above, I've been using my phone number in the code.
+This is a bad practice, so we can use Variables!
+<a href="/#/?id=variables" target="_blank">Read more here.</a>
+(P.S. that is my real number, shoot me a text and let me know how it's going!)
+
+> CLI: run `stack add variable PHONENUMBER` and it will prompt you for the value.
+
+> Web app: Click on `Variables` on the nav bar on the left. Add the new variable to the table.
+
+Now we just need to import variables in our code and we can use the values!
+
+```python
+    from pydantic import BaseModel
+    import sms
+    import shared
+>   import variables
+
+    class NewUser(BaseModel):
+        name: str # yay types!
+        phone: str # yay types!
+
+    def post(user: NewUser):
+        shared.storeUser(user)
+>       sms.send(variables.PHONENUMBER, f"{user.name} created an account!")
+        return {
+            "status": f"{user.name} says hi!"
+        }
+```
+
+### Final Thoughts
+
+Hopefully this was a useful introduction to Shortstack!
+<a href="/" target="_blank">The full docs are here.</a>
+
+Do you have any questions? Feature requests? Something missing from the docs? Wanna chat?
+
+Talk to us!
+
+Nader:
+cell: 4158180207
+email: nader+docs@getshortstack.com
