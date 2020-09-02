@@ -5,8 +5,8 @@ Shortstack is a development environment that allows you to rapidly build and sca
 **Highlighted Features**:
 
 - **Production ready by default**: Scale without extra configuration or additional knowledge
-- **Deployless**: Deployments are just a save button
-- **Ergonomic request/response validation**: Use python3 type hints to define the shape of your request and response
+- **Deployless**: Deployments just happen instantly when you save.
+- **Ergonomic request/response validation**: Use python3 type hints to define the shape of your request args and body.
 - **Openapi by default**: Openapi specification is automatically generated for you as you write and annotate your endpoints
 - **Secrets management**: Store your applications securely without extra effort
 - **Package management**: Use the power of python's community with 3rd party packages found on pypi
