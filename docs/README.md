@@ -223,6 +223,16 @@ Http responses are used to send data back to the client. Responses include a bod
 
 As you have seen you can create a response by returning from an endpoint handler. By default the response status code is `200`. The object returned will be used as the body.
 
+The default status code can be changed by annotating the endpoint handler using `@route.details` decorator. This has an added benefit of being documented in the OpenAPI specification.
+
+```python
+import route
+
+@route.details(status_code=201)
+def post():
+  return {"message": "created"}
+```
+
 To return a custom response you can return a Starlette response object. Read more about [Starlette response objects here](https://www.starlette.io/responses/).
 
 ```python
@@ -230,6 +240,15 @@ from fastapi.responses import JSONResponse
 
 def post():
   return JSONResponse(status_code=201, content={"message": "created"})
+```
+
+You can return an error code using a Starlette response object or you can raise an HttpException.
+
+```python
+from fastapi import HTTPException
+
+def post():
+  raise HTTPException(status_code=404, detail="Item not found")
 ```
 
 ## Shared Code
