@@ -13,5 +13,5 @@
   * [Markdown configuration](markdown.md)
   * [Language highlight](language-highlight.md) -->
 
-- [Login](https://app.getshortstack.com)
-- [Sign up](https://app.getshortstack.com/signup)
+- [Login](https://app.brev.dev)
+- [Sign up](https://app.brev.dev/signup)

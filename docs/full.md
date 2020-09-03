@@ -1,6 +1,6 @@
-# Shortstack
+# Brev
 
-Shortstack is a development environment that allows you to rapidly build and scale APIs. Shortstack aims to optimize for developer time without the tradeoff of vendor lockin.
+Brev is a development environment that allows you to rapidly build and scale APIs. Brev aims to optimize for developer time without the tradeoff of vendor lockin.
 
 **Highlighted Features**:
 
@@ -23,11 +23,11 @@ Our roadmap is constantly evolving with feedback from our users. Here are some o
 - **Application monitoring, alerting:** get crash alerts and performance monitoring out of the box or hook up (Sentry, APM, etc).
 - **Robust Logging and Querying** Search and query for relevant logs to quickly debug your application
 
-Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
+Use this quickstart guide to jump into Brev. If you have any lingering questions, [please e-mail us](nader+docs@brev.dev)
 
 **Project Status**
 
-[✓] Alpha: We are testing Shortstack with a small set of users.
+[✓] Alpha: We are testing Brev with a small set of users.
 
 [✓] Public Alpha: Join our waitlist and we will get you access as soon as we can. We hope you build something great! The platform still has kinks please help us iron them out.
 
@@ -39,7 +39,7 @@ Use this quickstart guide to jump into Shortstack. If you have any lingering que
 
 ## Core Concepts
 
-Shortstack lets you create projects. In each project, you'll find:
+Brev lets you create projects. In each project, you'll find:
 
 - Endpoints: Code that responds to http requests.
 - Shared Code: Code that can be shared by any endpoint in a project
@@ -49,11 +49,11 @@ Shortstack lets you create projects. In each project, you'll find:
 
 ## Quickstart
 
-This requires a shorstack account. [Create one here](https://app.getshortstack.com/signup)!
+This requires a shorstack account. [Create one here](https://app.brev.dev/signup)!
 
 Lets create a hello world project.
 
-1. Navigate to the [endpoints page](https://app.getshortstack.com/endpoints).
+1. Navigate to the [endpoints page](https://app.brev.dev/endpoints).
 2. Create a new endpoint by pressing the plus (+) sign in the side bar.
 3. Enter a name for the endpoint we can call it `hello_world`.
 4. Write the following python code in the editor.
@@ -67,9 +67,9 @@ def get():
 6. Run the endpoint by copying the url at the top of the page and entering it in a new tab or by pressing the play button at the bottom of the page.
 7. You should see `{"message": "hello world"}` as the response :)
 
-> **Hint**: Your url will look like `https://123456.getshortstack.com/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6` ## Defining Endpoints
+> **Hint**: Your url will look like `https://123456.brev.dev/api/_execute/89247f45-d47f-777-b8c9-91a20287faa6` ## Defining Endpoints
 
-> **Technical Detail**: Shortstack is built on top of [FastApi](https://fastapi.tiangolo.com)/[Starlette](https://www.starlette.io) and supports much of its API. To dig deeper in request/response, validation and documenation it might be helpful to checkout their docs.
+> **Technical Detail**: Brev is built on top of [FastApi](https://fastapi.tiangolo.com)/[Starlette](https://www.starlette.io) and supports much of its API. To dig deeper in request/response, validation and documenation it might be helpful to checkout their docs.
 
 ### Handling http methods
 
@@ -170,7 +170,7 @@ def post(item: ItemInBody):
   return item  # {"name": "Alec", "email": "email@mail.com", "phone": "123-456-7890"}
 ```
 
-To test this we can use a tool like [Postman](https://www.postman.com), the Shortstack CLI, or you can use Shorstack's `endpoint runner` at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
+To test this we can use a tool like [Postman](https://www.postman.com), the Brev CLI, or you can use Shorstack's `endpoint runner` at the bottom of the editor. Select the `json body` editor and add a test request body and make sure the http method selected is `POST`. You can use this as a test request body:
 
 ```json
 { "name": "Alec", "email": "email@mail.com", "phone": "123-456-7890" }
@@ -260,7 +260,7 @@ def get():
 
 ## Variables
 
-- `variables` is the Shortstack secrets/environment variables manager. You can access it [here](https://app.getshortstack.com/variables)
+- `variables` is the Brev secrets/environment variables manager. You can access it [here](https://app.brev.dev/variables)
 
   1. Add any environment variable or secret on the Variables page. Note: these variables are protected per project.
      ![image](static/docsMedia/variables1.png ":size=550")
@@ -495,9 +495,9 @@ Retrieves all objects as an iterable tuple of StorageKey, StorageValue in a coll
 
 - Returns: An iterable of `Tuple(StorageKey, StorageValue)`
 
-# Shortstack Tools
+# Brev Tools
 
-Shortstack comes with many services configured with sane defaults out-of-the-box.
+Brev comes with many services configured with sane defaults out-of-the-box.
 
 ## SMS
 
@@ -506,7 +506,7 @@ Shortstack comes with many services configured with sane defaults out-of-the-box
 ```python
 import sms
 
-sms.send("415555555", "hello from shortstack!")
+sms.send("415555555", "hello from Brev!")
 ```
 
 ## File Upload
@@ -551,10 +551,10 @@ def post(photo_meta: AwesomePhoto, file_content = File(...)):
   }
 ```
 
-# Shortstack CLI
+# Brev CLI
 
 If you have a development environment you like, you might prefer to
-develop there rather than go configure a new one in the browser. We get that! The Shortstack CLI will allow you to do everything the web app lets you do
+develop there rather than go configure a new one in the browser. We get that! The Brev CLI will allow you to do everything the web app lets you do
 
 - create/delete endpoints
 - run them in the remote environment
@@ -600,7 +600,7 @@ Once authenticated, you'll need to initialize
 stack initialize
 ```
 
-This will create a local directory at ~/GetShortstack with a folder per projecct. In each project folder, you'll find the endpoints, your shared code, and variables as individual .py files.
+This will create a local directory at ~/GetBrev with a folder per projecct. In each project folder, you'll find the endpoints, your shared code, and variables as individual .py files.
 
 ### Set Environment
 
@@ -637,7 +637,7 @@ stack add endpoint MyEndpointName
 stack remove endpoint MyEndpointName
 ```
 
-- `Variables`: You can add variables/secrets from [the app](https://app.getshortstack.com/variables) or right from the command line
+- `Variables`: You can add variables/secrets from [the app](https://app.brev.dev/variables) or right from the command line
 
 ```zsh
 stack add variable NewVar
@@ -714,7 +714,7 @@ Makes a POST call to `/MyEndpoint` with the body.json
 
 ### Logs
 
-After running an endpoint, Shortstack automatically collects logs and standard out! View them by running the `logs` command:
+After running an endpoint, Brev automatically collects logs and standard out! View them by running the `logs` command:
 To view all the logs of a project, run:
 
 ```zsh
@@ -729,7 +729,7 @@ stack logs endpoint MyEndpoint
 
 ## Syncronizing
 
-Now that you've made changes locally, it's time to save them so they're syncronized with Shortstack & the web app.
+Now that you've made changes locally, it's time to save them so they're syncronized with Brev & the web app.
 
 ### Diff
 
@@ -743,7 +743,7 @@ stack diff
 
 Use `override` to sync the changes.
 
-To override your local changes with those saved to your Shortstack account, override your local:
+To override your local changes with those saved to your Brev account, override your local:
 
 ```zsh
 stack override local
@@ -766,7 +766,7 @@ Shorstack is developed with two principles in mind.
 
 # Runtime and Environment
 
-Shortstack containerizes and isolates each project.
+Brev containerizes and isolates each project.
 
 - Python `3.7` is currently the only supported runtime.
 - Each request has a timeout of 30 seconds.
@@ -776,7 +776,7 @@ Shortstack containerizes and isolates each project.
 - Each project has by default 1GB of memory. You can request a maximum of 3GB of memory.
 - The server has been load tested with one client and handled 800 req/sec with median response times of 110ms. Results may vary depending on application. More testing needs to be conducted.
 
-> **Technical Detail**: Shortstack is currently built on top of AWS Lambda where each project is a separate Lambda.
+> **Technical Detail**: Brev is currently built on top of AWS Lambda where each project is a separate Lambda.
 
 # Limitations
 

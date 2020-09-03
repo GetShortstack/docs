@@ -1,7 +1,7 @@
 <!-- ![logo](_media/icon.svg) -->
 <!-- background color -->
 
-# 🥞Shortstack <small>1.0</small>
+# Brev <small>alpha</small>
 
 > code directly in the cloud with endpoints as first-class objects
 
@@ -11,8 +11,8 @@
 - 🙅‍♀️ Never write a full stack again
 - 👉👈 Yours to keep. Eject your project at any time
 
-[GitHub](https://github.com/naderlikeladder/shortstack_docs)
-[Get Started](#shortstack-docs)
+[GitHub](https://github.com/naderlikeladder/brev_docs)
+[Get Started](#brev-docs)
 
 <!-- background image -->
 

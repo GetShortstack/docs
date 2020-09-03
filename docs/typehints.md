@@ -1,6 +1,6 @@
 # Python Type Hints
 
-Python added optional type hints in 3.6+. Shortstack endpoints highly leverage typehints, which you can see in JSON params section.
+Python added optional type hints in 3.6+. Brev endpoints highly leverage typehints, which you can see in JSON params section.
 
 By typing the NewUser class, we're able to automatically match fields
 from an incoming JSON body, so your function only has to deal with the incoming `newUser` parameter.

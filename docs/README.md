@@ -2,11 +2,11 @@
 
 ### A quick summary from the founders
 
-Shortstack is a platform that let's you focus on the essence of your backend while we do all the heavy lifting. Ignore anyting about environments, infrastructure, etc, and just... code. We hope you build something great and make shortstack your best friend, it sure is ours :')
+Brev is a platform that let's you focus on the essence of your backend while we do all the heavy lifting. Ignore anyting about environments, infrastructure, etc, and just... code. We hope you build something great and make Brev your best friend, it sure is ours :')
 
 To clarify: this is not just an abstraction, it's a powerful developer tool thats genuinely writing all of the backend/infrastructure code behind the scenes, allowing you to return your mindshare to your product and your customers!
 
-We totally get that sometimes, frameworks are just too limiting. We've been there, so we designed Shortstack from the start with ability to eject. At any time, you can go under the hood, or even eject your code, including all of the backend code we wrote for you, and go host it yourself. If you do this, we'd love to know where we fell... well.. short :)
+We totally get that sometimes, frameworks are just too limiting. We've been there, so we designed Brev from the start with ability to eject. At any time, you can go under the hood, or even eject your code, including all of the backend code we wrote for you, and go host it yourself. If you do this, we'd love to know where we fell... well.. short :)
 
 We hope you love it
 -Nader & Alec
@@ -32,11 +32,11 @@ Our roadmap is constantly evolving with feedback from our users. Here are some o
 - **Application monitoring, alerting:** get crash alerts and performance monitoring out of the box or hook up (Sentry, APM, etc).
 - **Robust Logging and Querying** Search and query for relevant logs to quickly debug your application
 
-Use this quickstart guide to jump into Shortstack. If you have any lingering questions, [please e-mail us](nader+docs@getshortstack.com)
+Use this quickstart guide to jump into Brev. If you have any lingering questions, [please e-mail us](nader+docs@brev.dev)
 
 **Project Status**
 
-[✓] Alpha: We are testing Shortstack with a small set of users.
+[✓] Alpha: We are testing Brev with a small set of users.
 
 [✓] Public Alpha: Join our waitlist and we will get you access as soon as we can. We hope you build something great! The platform still has kinks please help us iron them out.
 
@@ -46,7 +46,7 @@ Use this quickstart guide to jump into Shortstack. If you have any lingering que
 
 ### This doc
 
-will go over the core features of Shortstack by building a sign up form that texts you everytime someone signs up.
+will go over the core features of Brev by building a sign up form that texts you everytime someone signs up.
 
 **7 steps, eta: 10 min**
 
@@ -54,13 +54,13 @@ will go over the core features of Shortstack by building a sign up form that tex
 
 #### Webapp Setup
 
-You can get started right away by logging in to https://app.getshortstack.com, or set up the CLI.
+You can get started right away by logging in to https://app.brev.dev, or set up the CLI.
 
 #### CLI Setup
 
 on Mac:
 
-> brew install getshortstack
+> brew install getBrev
 
 on Windows:
 The CLI is supported on WSL. Please follow the instructions here to install.
@@ -69,7 +69,7 @@ The CLI is supported on WSL. Please follow the instructions here to install.
 
 **Step 1 of 7**
 
-A huge benefit of Shortstack is that the concept of deploying has been abstracted. Simply create an endpoint, and by default, it's available.
+A huge benefit of Brev is that the concept of deploying has been abstracted. Simply create an endpoint, and by default, it's available.
 
 From the webapp: click "+" to create an endpoint. Give it a name, and click save!
 From the CLI: type `stack add endpoint <your EP name>`
@@ -78,7 +78,7 @@ Boom, your endpoint is saved and hosted!
 
 > Webapp: At the top of the code editor, you'll see the hoted URL. It's ready to go and be used in any app you're building. Go to "home" and you'll see all your endpoints, including this one.
 
-> CLI: You should now have a shortstack directory at `~/GetShortstack`. Creating a new endpoint will add a python file for the endpoint in that directory. `stack list` will get you the URLs for every endpoint. If something didn't work, make sure to login and initialize! `stack login` followed by `stack init`.
+> CLI: You should now have a Brev directory at `~/GetBrev`. Creating a new endpoint will add a python file for the endpoint in that directory. `stack list` will get you the URLs for every endpoint. If something didn't work, make sure to login and initialize! `stack login` followed by `stack init`.
 
 Now let's make the endpoint do something.
 
@@ -93,7 +93,7 @@ def get(greeting):
 
 Now let's hit the endpoint!
 
-> In the webapp: below the code editor, you can use the endpoint runner. Select GET and query params. Type greeting into the table, and hola as the value. Shortstack might've predicted the query args and type it in for you.
+> In the webapp: below the code editor, you can use the endpoint runner. Select GET and query params. Type greeting into the table, and hola as the value. Brev might've predicted the query args and type it in for you.
 
 > In the CLI: `stack run endpointName GET --args greeting=hola`. Note if you set up shell autocomplete, you can hit tab and the CLI will suggest the available endpoints and HTTP request types! Also, you can type -a instead of --args.
 > Note: you can also just open a new tab and manually type in the query argument.
@@ -113,7 +113,7 @@ Your endpoint can now accept data! Now let's do a POST.
 
 ### POST call with JSON body
 
-The function name from the previous example was `get`. You can use any valid HTTP request type, and Shortstack will pattern match the appropriate function based on the incoming HTTP request. Read more
+The function name from the previous example was `get`. You can use any valid HTTP request type, and Brev will pattern match the appropriate function based on the incoming HTTP request. Read more
 <a href="/#/full?id=handling-http-methods" target="_blank">here</a>
 . So to handle a POST call, we just add a function called `post`.
 
@@ -143,7 +143,7 @@ Now let's test it with the following JSON body:
 
 ```json
 {
-  "name": "Shortstack",
+  "name": "Brev",
   "phone": "4158180207"
 }
 ```
@@ -154,7 +154,7 @@ Now let's test it with the following JSON body:
 
 ```json
 {
-  "status": "Shortstack says hi!"
+  "status": "Brev says hi!"
 }
 ```
 
@@ -165,8 +165,8 @@ Next we'll notify you everytime a new user gets created!
 
 ### Get an SMS text every signup!
 
-Shortstack comes preconfigured with a lot of out-of-the-box functionality such as SMS. To send texts, just `import sms` and use `sms.send`. Read more
-<a href="/#/full?id=shortstack-tools" target="_blank">here</a>
+Brev comes preconfigured with a lot of out-of-the-box functionality such as SMS. To send texts, just `import sms` and use `sms.send`. Read more
+<a href="/#/full?id=Brev-tools" target="_blank">here</a>
 
 ```python
 from pydantic import BaseModel
@@ -225,7 +225,7 @@ def get():
 
 ### Shared Code
 
-Every Shortstack project has a Shared Code file, accessible by every endpoint in the project. This is a good place to isolate the storage code.
+Every Brev project has a Shared Code file, accessible by every endpoint in the project. This is a good place to isolate the storage code.
 
 <a href="/#/full?id=shared-code" target="_blank">Read more here.</a>
 
@@ -299,7 +299,7 @@ Now we just need to import variables in our code and we can use the values!
 
 ### Final Thoughts
 
-Hopefully this was a useful introduction to Shortstack!
+Hopefully this was a useful introduction to Brev!
 <a href="/#/full" target="_blank">The full docs are here.</a>
 
 Do you have any questions? Feature requests? Something missing from the docs? Wanna chat?
@@ -308,4 +308,4 @@ Talk to us!
 
 Nader:
 cell: 4158180207
-email: nader+docs@getshortstack.com
+email: nader+docs@brev.dev

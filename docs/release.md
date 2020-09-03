@@ -6,7 +6,7 @@ This release was our largest yet, with two breaking changes.
 
 ## CLI
 
-This is a huge new change! Install the CLI and use your favorite code editor with Shortstack! Instantly sync your changes, run the endpoints, install packages, and more. All these changes take place in the same remote environment too! So if you install package once, it'll be there forever… well, till you delete it :)
+This is a huge new change! Install the CLI and use your favorite code editor with Brev! Instantly sync your changes, run the endpoints, install packages, and more. All these changes take place in the same remote environment too! So if you install package once, it'll be there forever… well, till you delete it :)
 
 ## Handle HTTP Request Types
 
@@ -15,14 +15,14 @@ Rather than specify every endpoint as a GET or POST, we'll pattern match the fu
 
 ## Super Simple Arguments
 
-It's always an awkward dance to access the data being sent over to an endpoint. Now you can just put the data as input to your function. “get(x)” will automatically get you x from the query args or send an error if it doesn't exist. You can even define classes to represent a JSON body and let Shortstack do the rest! 
+It's always an awkward dance to access the data being sent over to an endpoint. Now you can just put the data as input to your function. “get(x)” will automatically get you x from the query args or send an error if it doesn't exist. You can even define classes to represent a JSON body and let Brev do the rest! 
 (note: this is the 2nd, and final, breaking change in this release. We no longer use the params object in functions since you can just use the variable directly)
 
 ## Stability and Improvements
 
 - We load tested the server to new heights, it's ready to scale!
 - We removed logs from the last feature since we'd rather integrate with a service and do it right. This was a tough decision but we feel it's for the better.
-- Fully functional API Swagger docs are automatically generated for each project. View that at project_domain.getshortstack.com/docs
+- Fully functional API Swagger docs are automatically generated for each project. View that at project_domain.brev.dev/docs
 
 # v0.4
 
