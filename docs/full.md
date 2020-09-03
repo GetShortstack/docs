@@ -757,6 +757,13 @@ stack override remote
 
 Note: override only syncronizes your active project. You can set the active project with `set`
 
+# Principles
+
+Shorstack is developed with two principles in mind.
+
+- Developer time is most valuable
+- Abstraction is compromise
+
 # Runtime and Environment
 
 Shortstack containerizes and isolates each project.
