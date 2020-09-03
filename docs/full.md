@@ -497,48 +497,29 @@ Retrieves all objects as an iterable tuple of StorageKey, StorageValue in a coll
 
 # Shortstack Tools
 
-Shortstack comes with many services and out-of-the-box! Rather than waste time making accounts, managing multiple bills, configuring services, etc, you can just code :)
+Shortstack comes with many services configured with sane defaults out-of-the-box.
 
 ## SMS
 
-- `sms(number: string, message: string)` is a simple way to send SMS messages. It comes from a real 10-digit number (not a short code). 2way texting support coming soon!
-
-  ```python
-  # Example:
-  sms("415555555", "hello from shortstack!")
-
-  ```
-
-  Or try it with a query parameter!
-
-  ```python
-  def main(params, state, request):
-      # /endpoint?number=415555555
-      sms(params.get("number"), "hello from shortstack!")
-
-      # your endpoint response
-      response_body = {sent: True} #confirm that you sent the text
-      status_code = 200
-      return response_body, status_code
-  ```
-
-## Upload Files
-
-- `upload_blob(blob)` is a file uploader. Call this function with the blob and it will return a URL to access it. You can store this URL in state or simply return it from the endpoint.
+`sms.send(phone_number: str, message: str)` is a simple way to send SMS messages. It comes from a real 10-digit number (not a short code). An exception will be thrown if the message fails to send.
 
 ```python
-# POST /endpoint
+import sms
 
-def main(params, state, request):
-    # your code here
-    file = request.files[“file”] # process the file from the request
-    file_bytes = file.read()
-    link = upload_blob(file_bytes) # call the Shortstack upload_blob function which returns a url
-    # your endpoint response
-    response_body = {“link”: link}
-    status_code = 200
-    return response_body, status_code
+sms.send("415555555", "hello from shortstack!")
 ```
+
+## File Upload
+
+Often you want to store files like images, videos, docs, or arbitrary binary data. Use `file.upload` to upload data. A long unique link will be returned that you can use to access the uploaded file. Anyone witgh access to this link will have access to the file.
+
+```python
+file.upload(data: Union[bytes, BinaryIO]) -> str
+```
+
+- Parameters
+  - data: a file like object or bytes can be used.
+- Returns: Returns a complete url with a long unique id. Anyone who has access to this link has access to the file.
 
 # Examples
 
@@ -776,9 +757,31 @@ stack override remote
 
 Note: override only syncronizes your active project. You can set the active project with `set`
 
-### Runtime and Environment
+# Runtime and Environment
 
-Shortstack environments are running Python 3.7+. We highly recommend type hints, which you can read more about [here](/typehints.md)
+Shortstack containerizes and isolates each project.
+
+- Python `3.7` is currently the only supported runtime.
+- Each request has a timeout of 30 seconds.
+- Each project can support up to 512MB of packages.
+- The file system is read only except for `/tmp`.
+- `/tmp` has a maximum storage of 512MB.
+- Each project has by default 1GB of memory. You can request a maximum of 3GB of memory.
+- The server has been load tested with one client and handled 800 req/sec with median response times of 110ms. Results may vary depending on application. More testing needs to be conducted.
+
+> **Technical Detail**: Shortstack is currently built on top of AWS Lambda where each project is a separate Lambda.
+
+# Limitations
+
+Every tool has its strengths and weaknesses. Here's when we think you should not use Shorstack (we wont stop you if you try).
+
+- Critical applications that need high degrees of resiliency, stability, and security.
+- Servers that require response times < 50ms.
+- Applications that need more than 3GB of memory.
+- Applications that need more than 512MB of file memory.
+- CPU or GPU bottlenecked applications.
+- Applications that require long running tasks of more than 15 minutes.
+- Applications that are already in production.
 
 # Release Notes
 
@@ -794,9 +797,4 @@ Older Versions:
 
 # Python Types
 
-[Learn more here](/typehints.md)
-s
-
-```
-
-```
+[Learn more here](https://fastapi.tiangolo.com/python-types/)
