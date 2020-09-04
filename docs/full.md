@@ -790,6 +790,8 @@ Every tool has its strengths and weaknesses. Here's when we think you should not
 - Applications that require long running tasks of more than 15 minutes.
 - Applications that are already in production.
 
+We look to support all these use cases soon.
+
 # Release Notes
 
 [Latest Version v0.5](/release.md?id=v05)
